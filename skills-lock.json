@@ -1,0 +1,130 @@
+{
+  "version": 1,
+  "skills": {
+    "deep-research": {
+      "source": "cnemri/google-genai-skills",
+      "sourceType": "github",
+      "computedHash": "08de12d664108de41cc6b96d18ed22d9adbad31e97b0c09526b5dd0053d52a58"
+    },
+    "developing-genkit-dart": {
+      "source": "firebase/agent-skills",
+      "sourceType": "github",
+      "computedHash": "ba0025db33c95d8b66cd6de1f4c25b8b70456fb2789ec6c97cd88d432eed3fb3"
+    },
+    "developing-genkit-js": {
+      "source": "firebase/agent-skills",
+      "sourceType": "github",
+      "computedHash": "4d3de47b5be279ab3b0ee6055ae541f28d1cc45f8e8986c0b5df2f8d89f4ea30"
+    },
+    "firebase-ai-logic": {
+      "source": "firebase/agent-skills",
+      "sourceType": "github",
+      "computedHash": "6ddf74ac9b3366d396e5fa85e695a7c5871e39edffc385533eaee2be159fcf03"
+    },
+    "firebase-app-hosting-basics": {
+      "source": "firebase/agent-skills",
+      "sourceType": "github",
+      "computedHash": "a3ba088442abf5b97281bcf3e4dd11e1f7bdefdc5bd404b4fb30f344d19742d2"
+    },
+    "firebase-auth-basics": {
+      "source": "firebase/agent-skills",
+      "sourceType": "github",
+      "computedHash": "3d85cfda10a68f0afabdad69d40ad83357f47acf9f5ba4d88a23182f6a59a5b4"
+    },
+    "firebase-basics": {
+      "source": "firebase/agent-skills",
+      "sourceType": "github",
+      "computedHash": "f19996128577803fef0ff041c8be37a858e0dae01c3f35080e932f7a61ad341c"
+    },
+    "firebase-data-connect": {
+      "source": "firebase/agent-skills",
+      "sourceType": "github",
+      "computedHash": "94bc7d16a4c368c9f3b29b3b26cea952a6a016c0e36b13b5805878ef2df1f7b6"
+    },
+    "firebase-firestore-enterprise-native-mode": {
+      "source": "firebase/agent-skills",
+      "sourceType": "github",
+      "computedHash": "f04ca2e7f4d07c0389eae37af6285a6e404bd85ea48cb1a50686848b110e5761"
+    },
+    "firebase-firestore-standard": {
+      "source": "firebase/agent-skills",
+      "sourceType": "github",
+      "computedHash": "b6a8e3d169026dbfd519cc855abc9f103858acf9221895fbfc37b4f3b280ba84"
+    },
+    "firebase-hosting-basics": {
+      "source": "firebase/agent-skills",
+      "sourceType": "github",
+      "computedHash": "0688a8ad6cb72149924352cc47e6cc8bf815e944b636a67b9da225cc9b025afc"
+    },
+    "firebase-local-env-setup": {
+      "source": "firebase/agent-skills",
+      "sourceType": "github",
+      "computedHash": "bb96442dbc29cb15cd6a82fb5771309bc8ff64c668f4a0c51ccc28b2da468218"
+    },
+    "gemini-api-dev": {
+      "source": "google-gemini/gemini-skills",
+      "sourceType": "github",
+      "computedHash": "3b6e763faa077750ef596d53c1be431e61c66a28591c3092c54c94162deac1e8"
+    },
+    "gemini-interactions-api": {
+      "source": "google-gemini/gemini-skills",
+      "sourceType": "github",
+      "computedHash": "6fbbc3147d72e2bc0d6db4f13eaca2313b5d8028ab676fbd2461fab81ece0f62"
+    },
+    "gemini-live-api-dev": {
+      "source": "google-gemini/gemini-skills",
+      "sourceType": "github",
+      "computedHash": "cbf7a485940a758ca5c9ca852464a33d024d65b82685bb3238da05dfc8240f79"
+    },
+    "google-adk-python": {
+      "source": "cnemri/google-genai-skills",
+      "sourceType": "github",
+      "computedHash": "38c410f6184b090b95cfa6e860ab0947bbc903ad269d451210aabfe0e4321ca6"
+    },
+    "google-developer-knowledge": {
+      "source": "cnemri/google-genai-skills",
+      "sourceType": "github",
+      "computedHash": "f316e0961cf8133542355c8768bdb0054807cf7c6c35571bee0fbbc725629dc9"
+    },
+    "google-genai-sdk-python": {
+      "source": "cnemri/google-genai-skills",
+      "sourceType": "github",
+      "computedHash": "69decef8c37d3a76813cb3f001b4374a5665efc343f03d1cdff1514f9de0c226"
+    },
+    "nano-banana-build": {
+      "source": "cnemri/google-genai-skills",
+      "sourceType": "github",
+      "computedHash": "9bc42bb1c6dccf20bcfdbf829a6a18a6b963bf8e56b2b4c57ef918b5d6fe8bc7"
+    },
+    "nano-banana-use": {
+      "source": "cnemri/google-genai-skills",
+      "sourceType": "github",
+      "computedHash": "c0d0689aacf1208a16431e35bdc9b6ce5000e4e04688b7fe196910bbaf899877"
+    },
+    "speech-build": {
+      "source": "cnemri/google-genai-skills",
+      "sourceType": "github",
+      "computedHash": "fdaba54a814bf083a307f9c4deaedcf81a7d9967c5d1bd6a4ce9691aeee12205"
+    },
+    "speech-use": {
+      "source": "cnemri/google-genai-skills",
+      "sourceType": "github",
+      "computedHash": "70d36de8e32d297f7aada09cb321e4e7648d9ed0235218d9414cae0f08098625"
+    },
+    "veo-build": {
+      "source": "cnemri/google-genai-skills",
+      "sourceType": "github",
+      "computedHash": "4f4b83c6240ea59d8b372a9be2cf4435e08f1cfb570269c9589ef872019be74f"
+    },
+    "veo-use": {
+      "source": "cnemri/google-genai-skills",
+      "sourceType": "github",
+      "computedHash": "0a88edfafddc8a06cec2526b69a9d6b6dfe8541a4b6e6cecdb1d96b783465070"
+    },
+    "vertex-ai-api-dev": {
+      "source": "google-gemini/gemini-skills",
+      "sourceType": "github",
+      "computedHash": "d4d8a0a44f34da580097747b8dedf1c60d95697a145d4501b67f41d2a44ceec8"
+    }
+  }
+}

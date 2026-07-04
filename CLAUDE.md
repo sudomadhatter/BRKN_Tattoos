@@ -1,0 +1,3 @@
+# Entry — clean-bmad-workspace (Claude Code)
+
+Read `AGENTS.md` in this same folder and follow it. That is the single source of truth.

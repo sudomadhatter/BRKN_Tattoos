@@ -1,0 +1,47 @@
+{
+  "name": "brkn-tattoos-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@radix-ui/react-dialog": "latest",
+    "@radix-ui/react-label": "latest",
+    "@radix-ui/react-slot": "latest",
+    "@tailwindcss/typography": "^0.5",
+    "class-variance-authority": "latest",
+    "clsx": "latest",
+    "firebase": "^12",
+    "framer-motion": "^12",
+    "lucide-react": "latest",
+    "next": "^16",
+    "next-themes": "latest",
+    "react": "^19",
+    "react-dom": "^19",
+    "react-markdown": "^10",
+    "remark-gfm": "^4",
+    "sonner": "^2",
+    "tailwind-merge": "latest",
+    "tailwindcss": "^3.4",
+    "tailwindcss-animate": "^1",
+    "zustand": "^5"
+  },
+  "devDependencies": {
+    "@testing-library/dom": "latest",
+    "@testing-library/jest-dom": "latest",
+    "@testing-library/react": "latest",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@vitejs/plugin-react": "latest",
+    "eslint": "^9",
+    "eslint-config-next": "^16",
+    "jsdom": "latest",
+    "typescript": "^5",
+    "vitest": "^4"
+  }
+}

@@ -1,0 +1,8 @@
+[default]
+python-interpreter-path = "c:\\Sudo_Hatter_Command\\Projects\\clean-bmad-workspace\\.venv\\Scripts\\python.exe"
+search_path = [
+    "c:\\Sudo_Hatter_Command\\Projects\\clean-bmad-workspace",
+    "c:\\Sudo_Hatter_Command\\Projects\\clean-bmad-workspace\\.venv\\Lib\\site-packages"
+]
+project_includes = ["backend/**/*.py"]
+site_package_path = "c:\\Sudo_Hatter_Command\\Projects\\clean-bmad-workspace\\.venv\\Lib\\site-packages"

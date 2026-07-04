@@ -1,0 +1,58 @@
+# ============================================================================
+# .gitignore — Clean BMAD Workspace
+# ============================================================================
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.venv/
+*.egg-info/
+dist/
+build/
+
+# Testing
+.pytest_cache/
+htmlcov/
+.coverage
+coverage.xml
+
+# IDE
+.vscode/.ropeproject/
+*.swp
+*.swo
+*~
+
+# Node / Frontend
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+
+# Build artifacts
+*.log
+npm-debug.log*
+
+# Auth & Secrets
+auth_keys/
+.env
+.env.local
+.env.production
+*.pem
+*.key
+
+# Firebase
+.firebase/
+
+# ADK
+.adk/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Temporary
+temporary_debug/
+*.tmp
