@@ -92,7 +92,7 @@ export async function POST(req: Request) {
 <body style="background-color: #0A0A0C; padding: 40px 20px; font-family: Helvetica, Arial, sans-serif; color: #EBEBE6; text-align: center; margin: 0;">
   <div class="email-container" style="max-width: 600px; margin: 0 auto; border: 1px solid #8A1E1E; padding: 40px; background-color: #0A0A0C;">
     
-    <img src="https://brkntattoos.com/images/logo.png" alt="BRKN Tattoos" style="width: 120px; margin-bottom: 30px;" />
+    <img src="https://brkntattoos.com/images/logo.png" alt="BRKN Tattoos" style="width: 120px; margin-bottom: 30px; opacity: 0.9;" />
     
     <h1 style="text-transform: uppercase; letter-spacing: 2px; font-weight: normal; font-size: 20px; border-bottom: 1px solid #333333; padding-bottom: 20px; margin-bottom: 30px; color: #EBEBE6;">
       Initiation Received
