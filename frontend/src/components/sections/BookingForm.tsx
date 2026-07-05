@@ -132,6 +132,8 @@ export default function BookingForm() {
                 });
                 if (res.ok) {
                   btn.innerText = "Request Received";
+                  btn.style.backgroundColor = "#8A0303";
+                  btn.style.color = "#EBEBE6";
                   form.reset();
                   setFiles([]);
                 } else {
@@ -156,13 +158,13 @@ export default function BookingForm() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <motion.div variants={item} className="flex flex-col gap-2 relative group">
                 <label className="text-xs uppercase tracking-[0.2em] text-bone/50 transition-colors group-focus-within:text-accent-gold">Full Name</label>
-                <input type="text" name="name" autoComplete="name" className="bg-transparent border-b border-bone/20 focus:border-transparent outline-none py-2 text-bone font-sans transition-colors duration-300 peer" required />
+                <input type="text" name="name" autoComplete="name" className="bg-transparent border-b border-bone/20 focus:border-transparent outline-none py-2 text-bone font-sans font-semibold transition-colors duration-300 peer" required />
                 <span className="absolute bottom-0 left-1/2 w-0 h-[1px] bg-accent-gold transition-all duration-500 ease-out peer-focus:w-full peer-focus:left-0"></span>
               </motion.div>
               
               <motion.div variants={item} className="flex flex-col gap-2 relative group">
                 <label className="text-xs uppercase tracking-[0.2em] text-bone/50 transition-colors group-focus-within:text-accent-gold">Email</label>
-                <input type="email" name="email" autoComplete="email" className="bg-transparent border-b border-bone/20 focus:border-transparent outline-none py-2 text-bone font-sans transition-colors duration-300 peer" required />
+                <input type="email" name="email" autoComplete="email" className="bg-transparent border-b border-bone/20 focus:border-transparent outline-none py-2 text-bone font-sans font-semibold transition-colors duration-300 peer" required />
                 <span className="absolute bottom-0 left-1/2 w-0 h-[1px] bg-accent-gold transition-all duration-500 ease-out peer-focus:w-full peer-focus:left-0"></span>
               </motion.div>
             </div>
@@ -170,31 +172,20 @@ export default function BookingForm() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <motion.div variants={item} className="flex flex-col gap-2 relative group">
                 <label className="text-xs uppercase tracking-[0.2em] text-bone/50 transition-colors group-focus-within:text-accent-gold">Phone Number</label>
-                <input type="tel" name="phone" autoComplete="tel" placeholder="(555) 555-5555" className="bg-transparent border-b border-bone/20 focus:border-transparent outline-none py-2 text-bone font-sans transition-colors duration-300 peer" />
+                <input type="tel" name="phone" autoComplete="tel" className="bg-transparent border-b border-bone/20 focus:border-transparent outline-none py-2 text-bone font-sans font-semibold transition-colors duration-300 peer" />
                 <span className="absolute bottom-0 left-1/2 w-0 h-[1px] bg-accent-gold transition-all duration-500 ease-out peer-focus:w-full peer-focus:left-0"></span>
               </motion.div>
 
               <motion.div variants={item} className="flex flex-col gap-2 relative group">
                 <label className="text-xs uppercase tracking-[0.2em] text-bone/50 transition-colors group-focus-within:text-accent-gold">Body Placement</label>
-                <input type="text" name="placement" className="bg-transparent border-b border-bone/20 focus:border-transparent outline-none py-2 text-bone font-sans transition-colors duration-300 peer" required />
+                <input type="text" name="placement" className="bg-transparent border-b border-bone/20 focus:border-transparent outline-none py-2 text-bone font-sans font-semibold transition-colors duration-300 peer" required />
                 <span className="absolute bottom-0 left-1/2 w-0 h-[1px] bg-accent-gold transition-all duration-500 ease-out peer-focus:w-full peer-focus:left-0"></span>
               </motion.div>
             </div>
 
             <motion.div variants={item} className="flex flex-col gap-2 relative group">
               <label className="text-xs uppercase tracking-[0.2em] text-bone/50 transition-colors group-focus-within:text-accent-gold">The Vision (Concept)</label>
-              <textarea name="concept" rows={4} className="bg-transparent border-b border-bone/20 focus:border-transparent outline-none py-2 text-bone font-sans transition-colors duration-300 resize-none peer" required></textarea>
-              <span className="absolute bottom-0 left-1/2 w-0 h-[1px] bg-accent-gold transition-all duration-500 ease-out peer-focus:w-full peer-focus:left-0"></span>
-            </motion.div>
-
-            <motion.div variants={item} className="flex flex-col gap-2 group relative">
-              <label className="text-xs uppercase tracking-[0.2em] text-bone/50">Reference Links (Optional)</label>
-              <input 
-                type="text" 
-                name="reference_url"
-                placeholder="Paste a link to a Pinterest board, Google Drive, or Instagram post"
-                className="bg-transparent border-b border-bone/20 focus:border-transparent outline-none py-2 text-bone font-sans transition-colors duration-300 peer text-sm" 
-              />
+              <textarea name="concept" rows={4} className="bg-transparent border-b border-bone/20 focus:border-transparent outline-none py-2 text-bone font-sans font-semibold transition-colors duration-300 resize-none peer" required></textarea>
               <span className="absolute bottom-0 left-1/2 w-0 h-[1px] bg-accent-gold transition-all duration-500 ease-out peer-focus:w-full peer-focus:left-0"></span>
             </motion.div>
 
