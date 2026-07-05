@@ -116,6 +116,15 @@ export default function BookingForm() {
               }
             }}
           >
+            {/* Honeypot field for spam protection */}
+            <input 
+              type="text" 
+              name="website_url" 
+              className="opacity-0 absolute top-0 left-0 h-0 w-0 z-[-1]" 
+              tabIndex={-1} 
+              autoComplete="off" 
+            />
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <motion.div variants={item} className="flex flex-col gap-2 relative group">
                 <label className="text-xs uppercase tracking-[0.2em] text-bone/50 transition-colors group-focus-within:text-accent-gold">Full Name</label>

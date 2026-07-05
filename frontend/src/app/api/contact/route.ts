@@ -13,7 +13,14 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json();
-    const { name, email, instagram, concept, placement } = body;
+    const { name, email, instagram, concept, placement, website_url } = body;
+
+    // --- HONEYPOT SPAM PROTECTION ---
+    // If a bot fills out the hidden 'website_url' field, silently succeed without sending an email.
+    if (website_url && website_url.trim() !== '') {
+      console.log('Spam bot detected and rejected silently.');
+      return NextResponse.json({ success: true, message: "Request received" });
+    }
 
     // Validate required fields
     if (!name || !email || !concept || !placement) {
