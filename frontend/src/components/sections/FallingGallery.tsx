@@ -4,10 +4,10 @@ import { motion, useScroll, useTransform, MotionValue } from 'framer-motion'
 import { useRef } from 'react'
 
 const cards = [
-  { id: 1, img: 'https://picsum.photos/seed/brkn1/800/1000', title: 'The Architect' },
-  { id: 2, img: 'https://picsum.photos/seed/brkn2/800/1000', title: 'Void Caller' },
-  { id: 3, img: 'https://picsum.photos/seed/brkn3/800/1000', title: 'Crimson Edge' },
-  { id: 4, img: 'https://picsum.photos/seed/brkn4/800/1000', title: 'Midnight Sun' },
+  { id: 1, img: '/images/5.jpeg', title: 'The Architect' },
+  { id: 2, img: '/images/6.jpeg', title: 'Void Caller' },
+  { id: 3, img: '/images/7.jpeg', title: 'Crimson Edge' },
+  { id: 4, img: '/images/4.jpeg', title: 'Midnight Sun' },
 ]
 
 // A helper component to handle the specific transform of a single falling image
@@ -109,8 +109,8 @@ export default function FallingGallery() {
           <p className="text-accent-blood tracking-[0.5em] text-sm md:text-base font-sans uppercase mb-4">
             The Void
           </p>
-          <h2 className="text-5xl sm:text-7xl md:text-8xl font-serif text-bone uppercase tracking-widest drop-shadow-2xl">
-            Fall Into The Ink
+          <h2 className="text-4xl sm:text-7xl md:text-8xl font-serif text-bone uppercase tracking-widest drop-shadow-2xl text-center px-6 leading-tight">
+            Fall Into<br className="block sm:hidden" /> The Ink
           </h2>
           {/* Deep background tunnel glow behind the text */}
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,#0a0a0a_80%)] -z-10" />
@@ -125,14 +125,53 @@ export default function FallingGallery() {
           <FallingImage src={cards[3].img} progress={scrollYProgress} range={[0.60, 0.85]} offset="translate-x-20 -translate-y-32" />
         </div>
 
-        {/* Phase 3: Final Serif Slide */}
+        {/* Phase 3: Final About Artist Slide */}
         <motion.div
-          className="absolute inset-0 z-60 flex items-center justify-center pointer-events-none"
+          className="absolute inset-0 z-60 flex items-center justify-center pointer-events-auto px-6 md:px-12"
           style={{ opacity: finalOpacity, scale: finalScale }}
         >
-          <h2 className="text-6xl sm:text-8xl md:text-[10rem] font-serif text-bone uppercase tracking-widest drop-shadow-[0_0_30px_rgba(255,255,255,0.2)]">
-            BRKN Tattoos
-          </h2>
+          <div className="w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 items-center">
+            
+            {/* Left: Artist Image */}
+            <div className="relative w-full aspect-[3/4] max-h-[60vh] md:max-h-[80vh] overflow-hidden rounded-md border border-bone/10 shadow-2xl">
+              <div 
+                className="absolute inset-0 bg-cover bg-center grayscale contrast-125"
+                style={{ backgroundImage: `url(/images/mr_brkn.jpg)` }}
+              />
+              <div className="absolute inset-0 bg-void-charcoal/20 mix-blend-overlay" />
+            </div>
+
+            {/* Right: Artist Copy */}
+            <div className="flex flex-col items-start text-left space-y-6">
+              <div>
+                <p className="text-accent-blood tracking-[0.3em] text-xs md:text-sm font-sans uppercase mb-2">
+                  The Vision
+                </p>
+                <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif text-bone uppercase tracking-widest drop-shadow-lg">
+                  Artist Mr. BRKN
+                </h2>
+                <p className="text-bone/50 tracking-widest text-sm md:text-base font-sans uppercase mt-2">
+                  Black & Grey • Realism • Custom Work
+                </p>
+              </div>
+
+              <div className="space-y-4 text-bone/80 font-sans text-sm md:text-base leading-relaxed max-w-lg">
+                <p>
+                  Started in New York and took those traditional fundamentals of portrait and realism to the next level with the soul of LA creativity and street culture.
+                </p>
+                <p>
+                  Running a custom studio means being blessed to choose who I work with. It ensures it's always the perfect fit for both the artist and the client.
+                </p>
+              </div>
+
+              <div className="pt-4 border-t border-bone/20 w-full max-w-sm">
+                <p className="text-xl md:text-2xl font-serif italic text-bone drop-shadow-md">
+                  "Here to turn your skin into a masterpiece."
+                </p>
+              </div>
+            </div>
+
+          </div>
         </motion.div>
 
       </div>

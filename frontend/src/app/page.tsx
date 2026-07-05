@@ -17,9 +17,9 @@ export default function Home() {
         Each section handles its own viewport padding and max-widths.
       */}
       <Hero />
-      <InstagramCTA />
-      <BookingForm />
       <FallingGallery />
+      <BookingForm />
+      <InstagramCTA />
       
       {/* Minimal Footer */}
       <footer className="w-full py-12 text-center border-t border-bone/10 mt-24">

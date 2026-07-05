@@ -60,7 +60,7 @@ export default function Hero() {
         className="absolute inset-0 z-20 w-full max-w-7xl mx-auto px-6 md:px-12 flex flex-col justify-end pb-24 md:pb-32 pointer-events-none"
       >
         <div className="flex flex-col items-start">
-          <h1 className="text-6xl sm:text-7xl md:text-[10rem] font-serif text-bone uppercase tracking-tighter leading-[0.85] mix-blend-difference flex flex-wrap overflow-hidden drop-shadow-2xl -ml-1 md:-ml-2">
+          <h1 className="text-[clamp(3rem,12.5vw,11rem)] font-serif text-bone uppercase tracking-tighter leading-[0.85] mix-blend-difference flex flex-nowrap whitespace-nowrap overflow-visible drop-shadow-2xl -ml-1 md:-ml-2">
             {titleWords.map((char, i) => (
               <motion.span 
                 key={i} 

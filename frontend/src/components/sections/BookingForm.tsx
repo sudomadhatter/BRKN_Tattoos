@@ -31,7 +31,19 @@ export default function BookingForm() {
 
   return (
     <section className="py-24 px-6 sm:px-12 w-full max-w-4xl mx-auto flex flex-col gap-16 relative overflow-hidden">
-      <div className="flex flex-col gap-4">
+      
+      {/* Decorative Edgy Logo Art */}
+      <motion.div 
+        initial={{ opacity: 0, x: 50 }}
+        whileInView={{ opacity: 0.15, x: 0 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 1.5, ease: "easeOut" }}
+        className="absolute right-0 top-0 w-[400px] md:w-[600px] pointer-events-none translate-x-1/4 md:translate-x-1/3 -translate-y-12 md:-translate-y-24 z-0 mix-blend-screen"
+      >
+        <img src="/images/logo.png" alt="BRKN Tattoos Art" className="w-full h-auto object-contain drop-shadow-[0_0_15px_rgba(255,255,255,0.1)]" />
+      </motion.div>
+
+      <div className="flex flex-col gap-4 relative z-10">
         <h2 className="text-4xl sm:text-6xl font-serif text-bone uppercase tracking-widest leading-none">
           Initiation
         </h2>
@@ -40,7 +52,7 @@ export default function BookingForm() {
         </p>
       </div>
 
-      <div className="relative min-h-[500px]">
+      <div className="relative min-h-[500px] z-10">
         {/* Verification Wave Shatter */}
         <AnimatePresence>
           {!isVerified && (
