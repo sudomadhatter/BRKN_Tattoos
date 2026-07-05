@@ -85,16 +85,17 @@ export default function FallingGallery() {
     return 1 + ((v / 0.3) * 0.5);
   });
 
-  // Final serif slide fading in at the absolute end of the tunnel
+  // Final serif slide: fades in earlier, then HOLDS at full for the rest of the
+  // tunnel so it sits fully visible before the Booking section scrolls up over it.
   const finalOpacity = useTransform(scrollYProgress, (v) => {
-    if (v <= 0.85) return 0;
-    if (v >= 1.0) return 1;
-    return (v - 0.85) / 0.15;
+    if (v <= 0.72) return 0;
+    if (v >= 0.82) return 1;
+    return (v - 0.72) / 0.10;
   });
   const finalScale = useTransform(scrollYProgress, (v) => {
-    if (v <= 0.85) return 0.8;
-    if (v >= 1.0) return 1;
-    return 0.8 + (((v - 0.85) / 0.15) * 0.2);
+    if (v <= 0.72) return 0.8;
+    if (v >= 0.82) return 1;
+    return 0.8 + (((v - 0.72) / 0.10) * 0.2);
   });
 
   return (
@@ -119,10 +120,10 @@ export default function FallingGallery() {
         {/* Phase 2: Sequential Overlapping Images */}
         {/* Each image starts exactly when the previous image hits its midpoint (fading out) */}
         <div className="absolute inset-0 z-30 flex items-center justify-center pointer-events-none">
-          <FallingImage src={cards[0].img} progress={scrollYProgress} range={[0.15, 0.40]} offset="-translate-x-20 -translate-y-12" />
-          <FallingImage src={cards[1].img} progress={scrollYProgress} range={[0.30, 0.55]} offset="translate-x-32 translate-y-20" />
-          <FallingImage src={cards[2].img} progress={scrollYProgress} range={[0.45, 0.70]} offset="-translate-x-40 translate-y-10" />
-          <FallingImage src={cards[3].img} progress={scrollYProgress} range={[0.60, 0.85]} offset="translate-x-20 -translate-y-32" />
+          <FallingImage src={cards[0].img} progress={scrollYProgress} range={[0.12, 0.34]} offset="-translate-x-20 -translate-y-12" />
+          <FallingImage src={cards[1].img} progress={scrollYProgress} range={[0.26, 0.48]} offset="translate-x-32 translate-y-20" />
+          <FallingImage src={cards[2].img} progress={scrollYProgress} range={[0.40, 0.62]} offset="-translate-x-40 translate-y-10" />
+          <FallingImage src={cards[3].img} progress={scrollYProgress} range={[0.54, 0.76]} offset="translate-x-20 -translate-y-32" />
         </div>
 
         {/* Phase 3: Final About Artist Slide */}
@@ -130,10 +131,10 @@ export default function FallingGallery() {
           className="absolute inset-0 z-60 flex items-center justify-center pointer-events-auto px-6 md:px-12"
           style={{ opacity: finalOpacity, scale: finalScale }}
         >
-          <div className="w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 items-center">
-            
+          <div className="w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-24 items-center">
+
             {/* Left: Artist Image */}
-            <div className="relative w-full aspect-[3/4] max-h-[60vh] md:max-h-[80vh] overflow-hidden rounded-md border border-bone/10 shadow-2xl">
+            <div className="relative w-full aspect-[3/4] max-h-[32vh] md:max-h-[80vh] overflow-hidden rounded-md border border-bone/10 shadow-2xl">
               <div 
                 className="absolute inset-0 bg-cover bg-center grayscale contrast-125"
                 style={{ backgroundImage: `url(/images/mr_brkn.jpg)` }}
@@ -142,7 +143,7 @@ export default function FallingGallery() {
             </div>
 
             {/* Right: Artist Copy */}
-            <div className="flex flex-col items-start text-left space-y-6">
+            <div className="flex flex-col items-start text-left space-y-4 md:space-y-6">
               <div>
                 <p className="text-accent-blood tracking-[0.3em] text-xs md:text-sm font-sans uppercase mb-2">
                   The Vision
