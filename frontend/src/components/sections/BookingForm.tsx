@@ -86,18 +86,46 @@ export default function BookingForm() {
             initial="hidden"
             animate="show"
             className="flex flex-col gap-8 w-full relative z-10"
-            onSubmit={(e) => e.preventDefault()}
+            onSubmit={async (e) => {
+              e.preventDefault();
+              const form = e.currentTarget;
+              const formData = new FormData(form);
+              const data = Object.fromEntries(formData.entries());
+              
+              const btn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+              const originalText = btn.innerText;
+              btn.innerText = "Transmitting...";
+              btn.disabled = true;
+
+              try {
+                const res = await fetch('/api/contact', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify(data)
+                });
+                if (res.ok) {
+                  btn.innerText = "Request Received";
+                  form.reset();
+                } else {
+                  btn.innerText = "Transmission Failed";
+                  setTimeout(() => { btn.innerText = originalText; btn.disabled = false; }, 3000);
+                }
+              } catch (err) {
+                btn.innerText = "Transmission Failed";
+                setTimeout(() => { btn.innerText = originalText; btn.disabled = false; }, 3000);
+              }
+            }}
           >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <motion.div variants={item} className="flex flex-col gap-2 relative group">
                 <label className="text-xs uppercase tracking-[0.2em] text-bone/50 transition-colors group-focus-within:text-accent-gold">Full Name</label>
-                <input type="text" className="bg-transparent border-b border-bone/20 focus:border-transparent outline-none py-2 text-bone font-sans transition-colors duration-300 peer" required />
+                <input type="text" name="name" className="bg-transparent border-b border-bone/20 focus:border-transparent outline-none py-2 text-bone font-sans transition-colors duration-300 peer" required />
                 <span className="absolute bottom-0 left-1/2 w-0 h-[1px] bg-accent-gold transition-all duration-500 ease-out peer-focus:w-full peer-focus:left-0"></span>
               </motion.div>
               
               <motion.div variants={item} className="flex flex-col gap-2 relative group">
                 <label className="text-xs uppercase tracking-[0.2em] text-bone/50 transition-colors group-focus-within:text-accent-gold">Email</label>
-                <input type="email" className="bg-transparent border-b border-bone/20 focus:border-transparent outline-none py-2 text-bone font-sans transition-colors duration-300 peer" required />
+                <input type="email" name="email" className="bg-transparent border-b border-bone/20 focus:border-transparent outline-none py-2 text-bone font-sans transition-colors duration-300 peer" required />
                 <span className="absolute bottom-0 left-1/2 w-0 h-[1px] bg-accent-gold transition-all duration-500 ease-out peer-focus:w-full peer-focus:left-0"></span>
               </motion.div>
             </div>
@@ -105,31 +133,32 @@ export default function BookingForm() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <motion.div variants={item} className="flex flex-col gap-2 relative group">
                 <label className="text-xs uppercase tracking-[0.2em] text-bone/50 transition-colors group-focus-within:text-accent-gold">Instagram Handle</label>
-                <input type="text" placeholder="@" className="bg-transparent border-b border-bone/20 focus:border-transparent outline-none py-2 text-bone font-sans transition-colors duration-300 peer" />
+                <input type="text" name="instagram" placeholder="@" className="bg-transparent border-b border-bone/20 focus:border-transparent outline-none py-2 text-bone font-sans transition-colors duration-300 peer" />
                 <span className="absolute bottom-0 left-1/2 w-0 h-[1px] bg-accent-gold transition-all duration-500 ease-out peer-focus:w-full peer-focus:left-0"></span>
               </motion.div>
 
               <motion.div variants={item} className="flex flex-col gap-2 relative group">
                 <label className="text-xs uppercase tracking-[0.2em] text-bone/50 transition-colors group-focus-within:text-accent-gold">Body Placement</label>
-                <input type="text" className="bg-transparent border-b border-bone/20 focus:border-transparent outline-none py-2 text-bone font-sans transition-colors duration-300 peer" required />
+                <input type="text" name="placement" className="bg-transparent border-b border-bone/20 focus:border-transparent outline-none py-2 text-bone font-sans transition-colors duration-300 peer" required />
                 <span className="absolute bottom-0 left-1/2 w-0 h-[1px] bg-accent-gold transition-all duration-500 ease-out peer-focus:w-full peer-focus:left-0"></span>
               </motion.div>
             </div>
 
             <motion.div variants={item} className="flex flex-col gap-2 relative group">
               <label className="text-xs uppercase tracking-[0.2em] text-bone/50 transition-colors group-focus-within:text-accent-gold">The Vision (Concept)</label>
-              <textarea rows={4} className="bg-transparent border-b border-bone/20 focus:border-transparent outline-none py-2 text-bone font-sans transition-colors duration-300 resize-none peer" required></textarea>
+              <textarea name="concept" rows={4} className="bg-transparent border-b border-bone/20 focus:border-transparent outline-none py-2 text-bone font-sans transition-colors duration-300 resize-none peer" required></textarea>
               <span className="absolute bottom-0 left-1/2 w-0 h-[1px] bg-accent-gold transition-all duration-500 ease-out peer-focus:w-full peer-focus:left-0"></span>
             </motion.div>
 
-            <motion.div variants={item} className="flex flex-col gap-2 group">
-              <label className="text-xs uppercase tracking-[0.2em] text-bone/50">Reference Material (Optional)</label>
+            <motion.div variants={item} className="flex flex-col gap-2 group relative">
+              <label className="text-xs uppercase tracking-[0.2em] text-bone/50">Reference Links (Optional)</label>
               <input 
-                type="file" 
-                accept="image/*"
-                multiple
-                className="text-bone/50 font-sans text-sm file:mr-4 file:py-2 file:px-4 file:border file:border-bone/20 file:bg-transparent file:text-bone file:uppercase file:tracking-widest file:text-xs hover:file:bg-bone/10 transition-colors file:cursor-pointer cursor-pointer" 
+                type="text" 
+                name="reference_url"
+                placeholder="Paste a link to a Pinterest board, Google Drive, or Instagram post"
+                className="bg-transparent border-b border-bone/20 focus:border-transparent outline-none py-2 text-bone font-sans transition-colors duration-300 peer text-sm" 
               />
+              <span className="absolute bottom-0 left-1/2 w-0 h-[1px] bg-accent-gold transition-all duration-500 ease-out peer-focus:w-full peer-focus:left-0"></span>
             </motion.div>
 
             <motion.button 
@@ -137,7 +166,7 @@ export default function BookingForm() {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.95 }}
               transition={heavyPhysics}
-              className="mt-8 bg-bone text-void py-6 uppercase font-sans tracking-[0.3em] font-bold hover:bg-accent-gold transition-colors duration-500"
+              className="mt-8 bg-bone text-void py-6 uppercase font-sans tracking-[0.3em] font-bold hover:bg-accent-gold transition-colors duration-500 disabled:opacity-50 disabled:cursor-not-allowed"
               type="submit"
             >
               Submit Request
