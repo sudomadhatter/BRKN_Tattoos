@@ -2,14 +2,34 @@
 
 import { motion, AnimatePresence } from 'framer-motion'
 import { useState } from 'react'
+import imageCompression from 'browser-image-compression'
 import { heavyPhysics } from '../motion/MotionWrapper'
+
+const MAX_FILES = 4
 
 export default function BookingForm() {
   const [isVerified, setIsVerified] = useState(false)
+  const [files, setFiles] = useState<File[]>([])
 
   const handleVerification = (e: React.FormEvent) => {
     e.preventDefault()
     setIsVerified(true)
+  }
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selected = Array.from(e.target.files ?? []).slice(0, MAX_FILES)
+    setFiles(selected)
+  }
+
+  // Compress an image in the browser and return a Resend-ready attachment
+  const compressToAttachment = async (file: File) => {
+    const compressed = await imageCompression(file, {
+      maxSizeMB: 1,
+      maxWidthOrHeight: 1600,
+      useWebWorker: true,
+    })
+    const dataUrl = await imageCompression.getDataUrlFromFile(compressed)
+    return { filename: file.name, content: dataUrl.split(',')[1] }
   }
 
   // Animation variants for the staggered form fields
@@ -90,14 +110,21 @@ export default function BookingForm() {
               e.preventDefault();
               const form = e.currentTarget;
               const formData = new FormData(form);
-              const data = Object.fromEntries(formData.entries());
-              
+              const data = Object.fromEntries(formData.entries()) as Record<string, unknown>;
+              // The file input is handled separately via compression, not the raw FormData entry.
+              delete data.references;
+
               const btn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
               const originalText = btn.innerText;
-              btn.innerText = "Transmitting...";
               btn.disabled = true;
 
               try {
+                if (files.length > 0) {
+                  btn.innerText = "Compressing...";
+                  data.attachments = await Promise.all(files.map(compressToAttachment));
+                }
+
+                btn.innerText = "Transmitting...";
                 const res = await fetch('/api/contact', {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/json' },
@@ -106,6 +133,7 @@ export default function BookingForm() {
                 if (res.ok) {
                   btn.innerText = "Request Received";
                   form.reset();
+                  setFiles([]);
                 } else {
                   btn.innerText = "Transmission Failed";
                   setTimeout(() => { btn.innerText = originalText; btn.disabled = false; }, 3000);
@@ -141,8 +169,8 @@ export default function BookingForm() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <motion.div variants={item} className="flex flex-col gap-2 relative group">
-                <label className="text-xs uppercase tracking-[0.2em] text-bone/50 transition-colors group-focus-within:text-accent-gold">Instagram Handle</label>
-                <input type="text" name="instagram" placeholder="@" className="bg-transparent border-b border-bone/20 focus:border-transparent outline-none py-2 text-bone font-sans transition-colors duration-300 peer" />
+                <label className="text-xs uppercase tracking-[0.2em] text-bone/50 transition-colors group-focus-within:text-accent-gold">Phone Number</label>
+                <input type="tel" name="phone" autoComplete="tel" placeholder="(555) 555-5555" className="bg-transparent border-b border-bone/20 focus:border-transparent outline-none py-2 text-bone font-sans transition-colors duration-300 peer" />
                 <span className="absolute bottom-0 left-1/2 w-0 h-[1px] bg-accent-gold transition-all duration-500 ease-out peer-focus:w-full peer-focus:left-0"></span>
               </motion.div>
 
@@ -170,7 +198,24 @@ export default function BookingForm() {
               <span className="absolute bottom-0 left-1/2 w-0 h-[1px] bg-accent-gold transition-all duration-500 ease-out peer-focus:w-full peer-focus:left-0"></span>
             </motion.div>
 
-            <motion.button 
+            <motion.div variants={item} className="flex flex-col gap-2">
+              <label className="text-xs uppercase tracking-[0.2em] text-bone/50">Reference Images (Optional)</label>
+              <input
+                type="file"
+                name="references"
+                accept="image/*"
+                multiple
+                onChange={handleFileChange}
+                className="text-sm text-bone/70 font-sans file:mr-4 file:border file:border-bone/20 file:bg-transparent file:text-bone/70 file:px-4 file:py-2 file:uppercase file:tracking-[0.2em] file:text-xs file:cursor-pointer hover:file:border-accent-gold hover:file:text-accent-gold file:transition-colors"
+              />
+              <span className="text-[10px] uppercase tracking-[0.2em] text-bone/30">
+                {files.length > 0
+                  ? `${files.length} image${files.length > 1 ? 's' : ''} selected${files.length === MAX_FILES ? ' (max)' : ''} — compressed automatically`
+                  : `Up to ${MAX_FILES} images — compressed automatically`}
+              </span>
+            </motion.div>
+
+            <motion.button
               variants={item}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.95 }}

@@ -13,7 +13,15 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json();
-    const { name, email, instagram, concept, placement, website_url } = body;
+    const { name, email, phone, concept, placement, website_url, attachments } = body;
+
+    // Normalize + cap client-supplied image attachments (base64, no data-URL prefix).
+    const safeAttachments = Array.isArray(attachments)
+      ? attachments
+          .filter((a) => a && typeof a.filename === 'string' && typeof a.content === 'string')
+          .slice(0, 4)
+          .map((a) => ({ filename: a.filename, content: a.content }))
+      : [];
 
     // --- HONEYPOT SPAM PROTECTION ---
     // If a bot fills out the hidden 'website_url' field, silently succeed without sending an email.
@@ -32,6 +40,7 @@ export async function POST(req: Request) {
       to: ['noah.brkntattoos@gmail.com'], // Deliver all bookings to this Gmail inbox
       subject: `New Booking Request: ${name}`,
       replyTo: email,
+      attachments: safeAttachments.length > 0 ? safeAttachments : undefined,
       html: `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
           <h1 style="color: #000; border-bottom: 2px solid #000; padding-bottom: 10px;">New Booking Request</h1>
@@ -39,7 +48,8 @@ export async function POST(req: Request) {
           <div style="margin-top: 20px;">
             <p><strong>Name:</strong> ${name}</p>
             <p><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p>
-            <p><strong>Instagram:</strong> ${instagram || 'Not provided'}</p>
+            <p><strong>Phone:</strong> ${phone || 'Not provided'}</p>
+            ${safeAttachments.length > 0 ? `<p><strong>Reference Images:</strong> ${safeAttachments.length} attached</p>` : ''}
           </div>
 
           <div style="margin-top: 20px; background-color: #f5f5f5; padding: 15px; border-radius: 5px;">
@@ -71,46 +81,56 @@ export async function POST(req: Request) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="color-scheme" content="light dark">
-  <meta name="supported-color-schemes" content="light dark">
+  <!-- Declare dark-scheme support so iOS Mail / Gmail leave our palette alone instead of auto-transforming it -->
+  <meta name="color-scheme" content="dark">
+  <meta name="supported-color-schemes" content="dark">
   <style>
     :root {
-      color-scheme: light dark;
-      supported-color-schemes: light dark;
+      color-scheme: dark;
+      supported-color-schemes: dark;
     }
-    body {
-      background-color: #0A0A0C !important;
-      color: #EBEBE6 !important;
-      margin: 0;
-      padding: 0;
-    }
-    .email-container {
-      background-color: #0A0A0C !important;
-    }
+    /* Gmail dark-mode transform overrides — force our fixed colors back */
+    u + .body .dm-bg,
+    [data-ogsb] .dm-bg,
+    [data-ogsc] .dm-bg { background-color: #0A0A0C !important; }
+    [data-ogsc] .dm-text { color: #EBEBE6 !important; }
+    [data-ogsc] .dm-blood { color: #8A1E1E !important; }
+    [data-ogsc] .dm-muted { color: #a1a19b !important; }
   </style>
 </head>
-<body style="background-color: #0A0A0C; padding: 40px 20px; font-family: Helvetica, Arial, sans-serif; color: #EBEBE6; text-align: center; margin: 0;">
-  <div class="email-container" style="max-width: 600px; margin: 0 auto; border: 1px solid #8A1E1E; padding: 40px; background-color: #0A0A0C;">
-    
-    <img src="https://brkntattoos.com/images/logo.png" alt="BRKN Tattoos" style="width: 120px; margin-bottom: 30px; opacity: 0.9;" />
-    
-    <h1 style="text-transform: uppercase; letter-spacing: 2px; font-weight: normal; font-size: 20px; border-bottom: 1px solid #333333; padding-bottom: 20px; margin-bottom: 30px; color: #EBEBE6;">
-      Initiation Received
-    </h1>
-    
-    <p style="line-height: 1.8; letter-spacing: 1px; font-size: 14px; color: #EBEBE6;">
-      Thank you for inquiring to work together. I will review your design and reach out for the next steps.
-    </p>
-    
-    <p style="margin-top: 40px; text-transform: uppercase; letter-spacing: 3px; color: #8A1E1E; font-size: 12px;">
-      Welcome to the underground.
-    </p>
-    
-    <p style="margin-top: 10px; letter-spacing: 2px; font-size: 12px; color: #a1a19b;">
-      - Mr BRKN
-    </p>
+<body class="body" bgcolor="#0A0A0C" style="background-color: #0A0A0C; margin: 0; padding: 0;">
+  <!-- Outer table locks the page background via the bgcolor attribute (respected even when CSS is overridden) -->
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#0A0A0C" class="dm-bg" style="background-color: #0A0A0C;">
+    <tr>
+      <td align="center" style="padding: 40px 20px;">
+        <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" bgcolor="#0A0A0C" class="dm-bg" style="max-width: 600px; width: 100%; background-color: #0A0A0C; border: 1px solid #8A1E1E;">
+          <tr>
+            <td align="center" bgcolor="#0A0A0C" class="dm-bg" style="background-color: #0A0A0C; padding: 40px; font-family: Helvetica, Arial, sans-serif; text-align: center;">
 
-  </div>
+              <img src="https://brkntattoos.com/images/logo.png" alt="BRKN Tattoos" width="120" style="width: 120px; margin-bottom: 30px; opacity: 0.9;" />
+
+              <h1 class="dm-text" style="text-transform: uppercase; letter-spacing: 2px; font-weight: normal; font-size: 20px; border-bottom: 1px solid #333333; padding-bottom: 20px; margin: 0 0 30px 0; color: #EBEBE6;">
+                Initiation Received
+              </h1>
+
+              <p class="dm-text" style="line-height: 1.8; letter-spacing: 1px; font-size: 14px; margin: 0; color: #EBEBE6;">
+                Thank you for inquiring to work together. I will review your design and reach out for the next steps.
+              </p>
+
+              <p class="dm-blood" style="margin: 40px 0 0 0; text-transform: uppercase; letter-spacing: 3px; color: #8A1E1E; font-size: 12px;">
+                Welcome to the underground.
+              </p>
+
+              <p class="dm-muted" style="margin: 10px 0 0 0; letter-spacing: 2px; font-size: 12px; color: #a1a19b;">
+                - Mr BRKN
+              </p>
+
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
 </body>
 </html>
       `,
