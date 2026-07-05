@@ -8,7 +8,7 @@ export const heavyPhysics = {
   mass: 1.5,
   stiffness: 50,
   damping: 20
-}
+} as const
 
 interface MotionWrapperProps extends HTMLMotionProps<"div"> {
   children: ReactNode
