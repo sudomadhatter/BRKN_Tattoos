@@ -27,6 +27,16 @@ export default function Hero() {
   return (
     <section ref={containerRef} className="relative h-screen w-full flex items-center justify-center overflow-hidden pt-0 md:pt-20 pb-32 md:pb-20">
       
+      {/* Decorative Edgy Logo Art Watermark */}
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 0.15, scale: 1 }}
+        transition={{ duration: 2, ease: "easeOut" }}
+        className="absolute inset-0 flex items-center justify-center pointer-events-none z-0 mix-blend-screen"
+      >
+        <img src="/images/logo.png" alt="BRKN Tattoos Art" className="w-[150vw] md:w-[100vw] max-w-[1400px] h-auto object-contain drop-shadow-[0_0_15px_rgba(255,255,255,0.1)] opacity-30" />
+      </motion.div>
+
       {/* Projector Container - smaller than site width, 80% opacity over global background */}
       <motion.div 
         className="relative w-[90%] max-w-5xl h-[80vh] overflow-hidden opacity-80 mix-blend-screen"
