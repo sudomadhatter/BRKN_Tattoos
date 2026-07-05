@@ -25,7 +25,7 @@ export default function Hero() {
   const titleWords = ['B','R','K','N', '\u00A0', 'T','A','T','T','O','O','S']
 
   return (
-    <section ref={containerRef} className="relative h-screen w-full flex items-center justify-center overflow-hidden pt-20 pb-20">
+    <section ref={containerRef} className="relative h-screen w-full flex items-center justify-center overflow-hidden pt-0 md:pt-20 pb-32 md:pb-20">
       
       {/* Projector Container - smaller than site width, 80% opacity over global background */}
       <motion.div 
@@ -57,7 +57,7 @@ export default function Hero() {
         variants={container}
         initial="hidden"
         animate="show"
-        className="absolute inset-0 z-20 w-full max-w-7xl mx-auto px-6 md:px-12 flex flex-col justify-end pb-24 md:pb-32 pointer-events-none"
+        className="absolute inset-0 z-20 w-full max-w-7xl mx-auto px-6 md:px-12 flex flex-col justify-end pb-36 md:pb-32 pointer-events-none"
       >
         <div className="flex flex-col items-start">
           <h1 className="text-[clamp(3rem,12.5vw,11rem)] font-serif text-bone uppercase tracking-tighter leading-[0.85] mix-blend-difference flex flex-nowrap whitespace-nowrap overflow-visible drop-shadow-2xl -ml-1 md:-ml-2">
