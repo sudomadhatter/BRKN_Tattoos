@@ -60,6 +60,67 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
+    // --- SECONDARY AUTO-REPLY TO CLIENT ---
+    const { error: replyError } = await resend.emails.send({
+      from: 'BRKN Tattoos <booking@brkntattoos.com>',
+      to: [email],
+      subject: "Initiation Received",
+      html: `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <meta name="supported-color-schemes" content="light dark">
+  <style>
+    :root {
+      color-scheme: light dark;
+      supported-color-schemes: light dark;
+    }
+    body {
+      background-color: #0A0A0C !important;
+      color: #EBEBE6 !important;
+      margin: 0;
+      padding: 0;
+    }
+    .email-container {
+      background-color: #0A0A0C !important;
+    }
+  </style>
+</head>
+<body style="background-color: #0A0A0C; padding: 40px 20px; font-family: Helvetica, Arial, sans-serif; color: #EBEBE6; text-align: center; margin: 0;">
+  <div class="email-container" style="max-width: 600px; margin: 0 auto; border: 1px solid #8A1E1E; padding: 40px; background-color: #0A0A0C;">
+    
+    <img src="https://brkntattoos.com/images/logo.png" alt="BRKN Tattoos" style="width: 120px; margin-bottom: 30px;" />
+    
+    <h1 style="text-transform: uppercase; letter-spacing: 2px; font-weight: normal; font-size: 20px; border-bottom: 1px solid #333333; padding-bottom: 20px; margin-bottom: 30px; color: #EBEBE6;">
+      Initiation Received
+    </h1>
+    
+    <p style="line-height: 1.8; letter-spacing: 1px; font-size: 14px; color: #EBEBE6;">
+      Thank you for inquiring to work together. I will review your design and reach out for the next steps.
+    </p>
+    
+    <p style="margin-top: 40px; text-transform: uppercase; letter-spacing: 3px; color: #8A1E1E; font-size: 12px;">
+      Welcome to the underground.
+    </p>
+    
+    <p style="margin-top: 10px; letter-spacing: 2px; font-size: 12px; color: #a1a19b;">
+      - Mr BRKN
+    </p>
+
+  </div>
+</body>
+</html>
+      `,
+    });
+
+    if (replyError) {
+      console.error("Auto-reply Error:", replyError);
+    }
+
+
     return NextResponse.json({ success: true, data });
   } catch (error) {
     console.error("Server Error:", error);
