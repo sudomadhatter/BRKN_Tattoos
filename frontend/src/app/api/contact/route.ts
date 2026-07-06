@@ -13,7 +13,15 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json();
-    const { name, email, instagram, concept, placement, website_url } = body;
+    const { name, email, phone, concept, placement, website_url, attachments } = body;
+
+    // Normalize + cap client-supplied image attachments (base64, no data-URL prefix).
+    const safeAttachments = Array.isArray(attachments)
+      ? attachments
+          .filter((a) => a && typeof a.filename === 'string' && typeof a.content === 'string')
+          .slice(0, 4)
+          .map((a) => ({ filename: a.filename, content: a.content }))
+      : [];
 
     // --- HONEYPOT SPAM PROTECTION ---
     // If a bot fills out the hidden 'website_url' field, silently succeed without sending an email.
@@ -32,6 +40,7 @@ export async function POST(req: Request) {
       to: ['noah.brkntattoos@gmail.com'], // Deliver all bookings to this Gmail inbox
       subject: `New Booking Request: ${name}`,
       replyTo: email,
+      attachments: safeAttachments.length > 0 ? safeAttachments : undefined,
       html: `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
           <h1 style="color: #000; border-bottom: 2px solid #000; padding-bottom: 10px;">New Booking Request</h1>
@@ -39,7 +48,8 @@ export async function POST(req: Request) {
           <div style="margin-top: 20px;">
             <p><strong>Name:</strong> ${name}</p>
             <p><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p>
-            <p><strong>Instagram:</strong> ${instagram || 'Not provided'}</p>
+            <p><strong>Phone:</strong> ${phone || 'Not provided'}</p>
+            ${safeAttachments.length > 0 ? `<p><strong>Reference Images:</strong> ${safeAttachments.length} attached</p>` : ''}
           </div>
 
           <div style="margin-top: 20px; background-color: #f5f5f5; padding: 15px; border-radius: 5px;">
@@ -61,10 +71,19 @@ export async function POST(req: Request) {
     }
 
     // --- SECONDARY AUTO-REPLY TO CLIENT ---
+    // The card is a pre-rendered image so phone dark mode CANNOT invert it —
+    // email clients never recolor image content. A plain-text fallback covers
+    // clients that block images.
     const { error: replyError } = await resend.emails.send({
       from: 'BRKN Tattoos <booking@brkntattoos.com>',
       to: [email],
       subject: "Initiation Received",
+      text: `Initiation Received
+
+Thank you for inquiring to work together. I will review your design and reach out for the next steps.
+
+Welcome to the underground.
+- Mr BRKN`,
       html: `
 <!DOCTYPE html>
 <html lang="en">
@@ -73,44 +92,21 @@ export async function POST(req: Request) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="light dark">
   <meta name="supported-color-schemes" content="light dark">
-  <style>
-    :root {
-      color-scheme: light dark;
-      supported-color-schemes: light dark;
-    }
-    body {
-      background-color: #0A0A0C !important;
-      color: #EBEBE6 !important;
-      margin: 0;
-      padding: 0;
-    }
-    .email-container {
-      background-color: #0A0A0C !important;
-    }
-  </style>
 </head>
-<body style="background-color: #0A0A0C; padding: 40px 20px; font-family: Helvetica, Arial, sans-serif; color: #EBEBE6; text-align: center; margin: 0;">
-  <div class="email-container" style="max-width: 600px; margin: 0 auto; border: 1px solid #8A1E1E; padding: 40px; background-color: #0A0A0C;">
-    
-    <img src="https://brkntattoos.com/images/logo.png" alt="BRKN Tattoos" style="width: 120px; margin-bottom: 30px; opacity: 0.9;" />
-    
-    <h1 style="text-transform: uppercase; letter-spacing: 2px; font-weight: normal; font-size: 20px; border-bottom: 1px solid #333333; padding-bottom: 20px; margin-bottom: 30px; color: #EBEBE6;">
-      Initiation Received
-    </h1>
-    
-    <p style="line-height: 1.8; letter-spacing: 1px; font-size: 14px; color: #EBEBE6;">
-      Thank you for inquiring to work together. I will review your design and reach out for the next steps.
-    </p>
-    
-    <p style="margin-top: 40px; text-transform: uppercase; letter-spacing: 3px; color: #8A1E1E; font-size: 12px;">
-      Welcome to the underground.
-    </p>
-    
-    <p style="margin-top: 10px; letter-spacing: 2px; font-size: 12px; color: #a1a19b;">
-      - Mr BRKN
-    </p>
-
-  </div>
+<body bgcolor="#0A0A0C" style="background-color: #0A0A0C; margin: 0; padding: 0;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#0A0A0C" style="background-color: #0A0A0C;">
+    <tr>
+      <td align="center" bgcolor="#0A0A0C" style="background-color: #0A0A0C; padding: 40px 20px;">
+        <!-- Fixed image of the confirmation card. Baked-in colors are immune to dark/light mode. -->
+        <img
+          src="https://brkntattoos.com/images/email-confirmation.png"
+          width="600"
+          alt="Initiation Received. Thank you for inquiring to work together. I will review your design and reach out for the next steps. Welcome to the underground. - Mr BRKN"
+          style="width: 100%; max-width: 600px; height: auto; display: block; border: 0;"
+        />
+      </td>
+    </tr>
+  </table>
 </body>
 </html>
       `,
