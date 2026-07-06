@@ -45,27 +45,586 @@
      mode=auto, collapse-threshold=8 files. Edit the CURATED block above. -->
 
 ```text
-Fresh_Workspace_BMAD/
-  _bmad-output/
-    active-context/
-        active-context.md
-    implementation-artifacts/
-    planning-artifacts/
-    test-artifacts/
-      project-context.md
-  _my_resources/
-    Agentic_Loops/
-        autopilot_bmad_dev_loop.md
-    Docs/
-        BMAD_CCPS_workspace_guide.md
-    Visual_Diagrams/
-        total_workspace_guide_overview.md
-    open_tasks/
-        todo_list.md
-      AGENTS.md
-      CLAUDE.md
-      GEMINI.md
-      README.md
+BRKN_Tattoos/
+  _bmad/
+    _config/
+      agents/
+          [11 files: .yamlx11 | e.g. bmm-analyst.customize.yaml]
+      ides/
+          antigravity.yaml
+        agent-manifest.csv
+        bmad-help.csv
+        files-manifest.csv
+        manifest.yaml
+        skill-manifest.csv
+        task-manifest.csv
+        tool-manifest.csv
+        workflow-manifest.csv
+    _memory/
+      tech-writer-sidecar/
+          documentation-standards.md
+        config.yaml
+    bmm/
+      1-analysis/
+        bmad-agent-analyst/
+            SKILL.md
+            bmad-skill-manifest.yaml
+        bmad-agent-tech-writer/
+            SKILL.md
+            bmad-skill-manifest.yaml
+            explain-concept.md
+            mermaid-gen.md
+            validate-doc.md
+            write-document.md
+        bmad-document-project/
+          templates/
+              deep-dive-template.md
+              index-template.md
+              project-overview-template.md
+              project-scan-report-schema.json
+              source-tree-template.md
+          workflows/
+              deep-dive-instructions.md
+              deep-dive-workflow.md
+              full-scan-instructions.md
+              full-scan-workflow.md
+            SKILL.md
+            checklist.md
+            documentation-requirements.csv
+            instructions.md
+            workflow.md
+        bmad-product-brief/
+          agents/
+              artifact-analyzer.md
+              opportunity-reviewer.md
+              skeptic-reviewer.md
+              web-researcher.md
+          prompts/
+              contextual-discovery.md
+              draft-and-review.md
+              finalize.md
+              guided-elicitation.md
+          resources/
+              brief-template.md
+            SKILL.md
+            bmad-manifest.json
+        research/
+          bmad-domain-research/
+            domain-steps/
+                step-01-init.md
+                step-02-domain-analysis.md
+                step-03-competitive-landscape.md
+                step-04-regulatory-focus.md
+                step-05-technical-trends.md
+                step-06-research-synthesis.md
+              SKILL.md
+              research.template.md
+              workflow.md
+          bmad-market-research/
+            steps/
+                step-01-init.md
+                step-02-customer-behavior.md
+                step-03-customer-pain-points.md
+                step-04-customer-decisions.md
+                step-05-competitive-analysis.md
+                step-06-research-completion.md
+              SKILL.md
+              research.template.md
+              workflow.md
+          bmad-technical-research/
+            technical-steps/
+                step-01-init.md
+                step-02-technical-overview.md
+                step-03-integration-patterns.md
+                step-04-architectural-patterns.md
+                step-05-implementation-research.md
+                step-06-research-synthesis.md
+              SKILL.md
+              research.template.md
+              workflow.md
+      2-plan-workflows/
+        bmad-agent-pm/
+            SKILL.md
+            bmad-skill-manifest.yaml
+        bmad-agent-ux-designer/
+            SKILL.md
+            bmad-skill-manifest.yaml
+        bmad-create-prd/
+          data/
+              domain-complexity.csv
+              prd-purpose.md
+              project-types.csv
+          steps-c/
+              [15 files: .mdx15 | e.g. step-01-init.md]
+          templates/
+              prd-template.md
+            SKILL.md
+            workflow.md
+        bmad-create-ux-design/
+          steps/
+              [15 files: .mdx15 | e.g. step-01-init.md]
+            SKILL.md
+            ux-design-template.md
+            workflow.md
+        bmad-edit-prd/
+          steps-e/
+              step-e-01-discovery.md
+              step-e-01b-legacy-conversion.md
+              step-e-02-review.md
+              step-e-03-edit.md
+              step-e-04-complete.md
+            SKILL.md
+            workflow.md
+        bmad-validate-prd/
+          data/
+              domain-complexity.csv
+              prd-purpose.md
+              project-types.csv
+          steps-v/
+              [14 files: .mdx14 | e.g. step-v-01-discovery.md]
+            SKILL.md
+            workflow.md
+        create-prd/
+          data/
+              domain-complexity.csv
+              prd-purpose.md
+              project-types.csv
+          steps-v/
+              [14 files: .mdx14 | e.g. step-v-01-discovery.md]
+            workflow-validate-prd.md
+      3-solutioning/
+        bmad-agent-architect/
+            SKILL.md
+            bmad-skill-manifest.yaml
+        bmad-check-implementation-readiness/
+          steps/
+              step-01-document-discovery.md
+              step-02-prd-analysis.md
+              step-03-epic-coverage-validation.md
+              step-04-ux-alignment.md
+              step-05-epic-quality-review.md
+              step-06-final-assessment.md
+          templates/
+              readiness-report-template.md
+            SKILL.md
+            workflow.md
+        bmad-create-architecture/
+          data/
+              domain-complexity.csv
+              project-types.csv
+          steps/
+              [9 files: .mdx9 | e.g. step-01-init.md]
+            SKILL.md
+            architecture-decision-template.md
+            workflow.md
+        bmad-create-epics-and-stories/
+          steps/
+              step-01-validate-prerequisites.md
+              step-02-design-epics.md
+              step-03-create-stories.md
+              step-04-final-validation.md
+          templates/
+              epics-template.md
+            SKILL.md
+            workflow.md
+        bmad-generate-project-context/
+          steps/
+              step-01-discover.md
+              step-02-generate.md
+              step-03-complete.md
+            SKILL.md
+            project-context-template.md
+            workflow.md
+      4-implementation/
+        bmad-agent-dev/
+            SKILL.md
+            bmad-skill-manifest.yaml
+        bmad-agent-qa/
+            SKILL.md
+            bmad-skill-manifest.yaml
+        bmad-agent-quick-flow-solo-dev/
+            SKILL.md
+            bmad-skill-manifest.yaml
+        bmad-agent-sm/
+            SKILL.md
+            bmad-skill-manifest.yaml
+        bmad-code-review/
+          steps/
+              step-01-gather-context.md
+              step-02-review.md
+              step-03-triage.md
+              step-04-present.md
+            SKILL.md
+            workflow.md
+        bmad-correct-course/
+            SKILL.md
+            checklist.md
+            workflow.md
+        bmad-create-story/
+            SKILL.md
+            checklist.md
+            discover-inputs.md
+            template.md
+            workflow.md
+        bmad-dev-story/
+            SKILL.md
+            checklist.md
+            workflow.md
+        bmad-qa-generate-e2e-tests/
+            SKILL.md
+            checklist.md
+            workflow.md
+        bmad-quick-dev/
+            [9 files: .mdx9 | e.g. SKILL.md]
+        bmad-retrospective/
+            SKILL.md
+            workflow.md
+        bmad-sprint-planning/
+            SKILL.md
+            checklist.md
+            sprint-status-template.yaml
+            workflow.md
+        bmad-sprint-status/
+            SKILL.md
+            workflow.md
+      agents/
+        tech-writer/
+            tech-writer.md
+          analyst.md
+          architect.md
+          dev.md
+          pm.md
+          qa.md
+          quick-flow-solo-dev.md
+          sm.md
+          ux-designer.md
+        config.yaml
+        module-help.csv
+    core/
+      agents/
+          bmad-master.md
+      bmad-advanced-elicitation/
+          SKILL.md
+          methods.csv
+      bmad-brainstorming/
+        steps/
+            step-01-session-setup.md
+            step-01b-continue.md
+            step-02a-user-selected.md
+            step-02b-ai-recommended.md
+            step-02c-random-selection.md
+            step-02d-progressive-flow.md
+            step-03-technique-execution.md
+            step-04-idea-organization.md
+          SKILL.md
+          brain-methods.csv
+          template.md
+          workflow.md
+      bmad-distillator/
+        agents/
+            distillate-compressor.md
+            round-trip-reconstructor.md
+        resources/
+            compression-rules.md
+            distillate-format-reference.md
+            splitting-strategy.md
+        scripts/
+          tests/
+              test_analyze_sources.py
+                  def temp_dir()
+                  class TestResolveInputs
+                    def test_single_file(self, temp_dir)
+                    def test_folder_recursion(self, temp_dir)
+                    def test_folder_skips_excluded_dirs(self, temp_dir)
+                    def test_folder_skips_non_text_files(self, temp_dir)
+                    def test_glob_pattern(self, temp_dir)
+                    def test_deduplication(self, temp_dir)
+                    def test_mixed_inputs(self, temp_dir)
+                    def test_nonexistent_path(self)
+                  class TestDetectDocType
+                    def test_detection(self, filename, expected)
+                  class TestSuggestGroups
+                    def test_groups_brief_with_discovery_notes(self, temp_dir)
+                    def test_standalone_files(self, temp_dir)
+                    def test_mixed_grouped_and_standalone(self, temp_dir)
+                  class TestAnalyze
+                    def test_basic_analysis(self, temp_dir)
+                    def test_routing_single_small_input(self, temp_dir)
+                    def test_routing_fanout_many_files(self, temp_dir)
+                    def test_folder_analysis(self, temp_dir)
+                    def test_no_files_found(self)
+                    def test_stdout_output(self, temp_dir, capsys)
+            analyze_sources.py
+                def resolve_inputs(inputs)
+                def detect_doc_type(filename)
+                def suggest_groups(files)
+                def analyze(inputs, output_path)
+                def output_json(data, output_path)
+                def main()
+          SKILL.md
+      bmad-editorial-review-prose/
+          SKILL.md
+      bmad-editorial-review-structure/
+          SKILL.md
+      bmad-help/
+          SKILL.md
+      bmad-index-docs/
+          SKILL.md
+      bmad-init/
+        resources/
+            core-module.yaml
+        scripts/
+          tests/
+              test_bmad_init.py
+                  class TestFindProjectRoot
+                    def test_finds_bmad_folder(self)
+                    def test_llm_provided_with_bmad(self)
+                    def test_llm_provided_without_bmad_still_returns_dir(self)
+                  class TestParseVarSpecs
+                    def test_vars_with_defaults(self)
+                    def test_vars_without_defaults(self)
+                    def test_mixed_vars(self)
+                    def test_colon_in_default(self)
+                    def test_empty_string(self)
+                    def test_none(self)
+                  class TestResolveProjectRootPlaceholder
+                    def test_resolve_placeholder(self)
+                    def test_no_placeholder(self)
+                    def test_none(self)
+                    def test_non_string(self)
+                  class TestExpandTemplate
+                    def test_basic_expansion(self)
+                    def test_multiple_placeholders(self)
+                    def test_none_value(self)
+                    def test_non_string(self)
+                  class TestApplyResultTemplate
+                    def test_with_result_template(self)
+                    def test_without_result_template(self)
+                    def test_value_only_template(self)
+                  class TestLoadModuleYaml
+                    def setUp(self)
+                    def tearDown(self)
+                    def test_loads_core_module_yaml(self)
+                    def test_loads_module_with_directories(self)
+                    def test_returns_none_for_missing(self)
+                    def test_returns_none_for_empty(self)
+                  class TestFindCoreModuleYaml
+                    def test_returns_path_to_resources(self)
+                  class TestFindTargetModuleYaml
+                    def setUp(self)
+                    def tearDown(self)
+                    def test_finds_in_skill_assets(self)
+                    def test_finds_in_skill_root(self)
+                    def test_finds_in_bmad_module_dir(self)
+                    def test_returns_none_when_not_found(self)
+                    def test_skill_path_takes_priority(self)
+                  class TestLoadConfigFile
+                    def setUp(self)
+                    def tearDown(self)
+                    def test_loads_flat_yaml(self)
+                    def test_returns_none_for_missing(self)
+                  class TestLoadModuleConfig
+                    def setUp(self)
+                    def tearDown(self)
+                    def test_load_core(self)
+                    def test_load_module_includes_core_vars(self)
+                    def test_missing_module(self)
+            bmad_init.py
+                def find_project_root(llm_provided)
+                def load_module_yaml(path)
+                def find_core_module_yaml()
+                def find_target_module_yaml(module_code, project_root, skill_path)
+                def load_config_file(path)
+                def load_module_config(module_code, project_root)
+                def resolve_project_root_placeholder(value, project_root)
+                def parse_var_specs(vars_string)
+                def expand_template(value, context)
+                def apply_result_template(var_def, raw_value, context)
+                def cmd_load(args)
+                def cmd_check(args)
+                def cmd_resolve_defaults(args)
+                def cmd_write(args)
+                def _write_config_file(path, data, module_label)
+                def main()
+          SKILL.md
+      bmad-party-mode/
+        steps/
+            step-01-agent-loading.md
+            step-02-discussion-orchestration.md
+            step-03-graceful-exit.md
+          SKILL.md
+          workflow.md
+      bmad-review-adversarial-general/
+          SKILL.md
+      bmad-review-edge-case-hunter/
+          SKILL.md
+      bmad-shard-doc/
+          SKILL.md
+      tasks/
+          editorial-review-prose.xml
+          editorial-review-structure.xml
+          help.md
+          index-docs.xml
+          review-adversarial-general.xml
+          shard-doc.xml
+          workflow.xml
+      workflows/
+        advanced-elicitation/
+            methods.csv
+            workflow.xml
+        brainstorming/
+          steps/
+              step-01-session-setup.md
+              step-01b-continue.md
+              step-02a-user-selected.md
+              step-02b-ai-recommended.md
+              step-02c-random-selection.md
+              step-02d-progressive-flow.md
+              step-03-technique-execution.md
+              step-04-idea-organization.md
+            brain-methods.csv
+            template.md
+            workflow.md
+        party-mode/
+          steps/
+              step-01-agent-loading.md
+              step-02-discussion-orchestration.md
+              step-03-graceful-exit.md
+            workflow.md
+        config.yaml
+        module-help.csv
+    custom/
+        config.user.toml
+    tea/
+      agents/
+        bmad-tea/
+          resources/
+            knowledge/
+                [42 files: .mdx42 | e.g. adr-quality-readiness-checklist.md]
+              tea-index.csv
+            SKILL.md
+            bmad-skill-manifest.yaml
+          tea.md
+      workflows/
+        testarch/
+          bmad-teach-me-testing/
+            data/
+                curriculum.yaml
+                quiz-questions.yaml
+                role-paths.yaml
+                session-content-map.yaml
+                tea-resources-index.yaml
+            steps-c/
+                [12 files: .mdx12 | e.g. step-01-init.md]
+            steps-e/
+                step-e-01-assess-workflow.md
+                step-e-02-apply-edits.md
+            steps-v/
+                step-v-01-validate.md
+            templates/
+                certificate-template.md
+                progress-template.yaml
+                session-notes-template.md
+              SKILL.md
+              bmad-skill-manifest.yaml
+              checklist.md
+              instructions.md
+              workflow-plan-teach-me-testing.md
+              workflow.md
+          bmad-testarch-atdd/
+            steps-c/
+                [9 files: .mdx9 | e.g. step-01-preflight-and-context.md]
+            steps-e/
+                step-01-assess.md
+                step-02-apply-edit.md
+            steps-v/
+                step-01-validate.md
+              [10 files: .mdx8, .yamlx2 | e.g. SKILL.md]
+          bmad-testarch-automate/
+            steps-c/
+                [9 files: .mdx9 | e.g. step-01-preflight-and-context.md]
+            steps-e/
+                step-01-assess.md
+                step-02-apply-edit.md
+            steps-v/
+                step-01-validate.md
+              [9 files: .mdx7, .yamlx2 | e.g. SKILL.md]
+          bmad-testarch-ci/
+            steps-c/
+                step-01-preflight.md
+                step-01b-resume.md
+                step-02-generate-pipeline.md
+                step-03-configure-quality-gates.md
+                step-04-validate-and-summary.md
+            steps-e/
+                step-01-assess.md
+                step-02-apply-edit.md
+            steps-v/
+                step-01-validate.md
+              [14 files: .mdx7, .yamlx6, .groovyx1 | e.g. SKILL.md]
+          bmad-testarch-framework/
+            steps-c/
+                step-01-preflight.md
+                step-01b-resume.md
+                step-02-select-framework.md
+                step-03-scaffold-framework.md
+                step-04-docs-and-scripts.md
+                step-05-validate-and-summary.md
+            steps-e/
+                step-01-assess.md
+                step-02-apply-edit.md
+            steps-v/
+                step-01-validate.md
+              [9 files: .mdx7, .yamlx2 | e.g. SKILL.md]
+          bmad-testarch-nfr/
+            steps-c/
+                [11 files: .mdx11 | e.g. step-01-load-context.md]
+            steps-e/
+                step-01-assess.md
+                step-02-apply-edit.md
+            steps-v/
+                step-01-validate.md
+              [10 files: .mdx8, .yamlx2 | e.g. SKILL.md]
+          bmad-testarch-test-design/
+            steps-c/
+                step-01-detect-mode.md
+                step-01b-resume.md
+                step-02-load-context.md
+                step-03-risk-and-testability.md
+                step-04-coverage-plan.md
+                step-05-generate-output.md
+            steps-e/
+                step-01-assess.md
+                step-02-apply-edit.md
+            steps-v/
+                step-01-validate.md
+              [13 files: .mdx11, .yamlx2 | e.g. SKILL.md]
+          bmad-testarch-test-review/
+            steps-c/
+                [10 files: .mdx10 | e.g. step-01-load-context.md]
+            steps-e/
+                step-01-assess.md
+                step-02-apply-edit.md
+            steps-v/
+                step-01-validate.md
+              [10 files: .mdx8, .yamlx2 | e.g. SKILL.md]
+          bmad-testarch-trace/
+            steps-c/
+                step-01-load-context.md
+                step-01b-resume.md
+                step-02-discover-tests.md
+                step-03-map-criteria.md
+                step-04-analyze-gaps.md
+                step-05-gate-decision.md
+            steps-e/
+                step-01-assess.md
+                step-02-apply-edit.md
+            steps-v/
+                step-01-validate.md
+              [10 files: .mdx8, .yamlx2 | e.g. SKILL.md]
+            README.md
+        config.yaml
+        module-help.csv
   backend/
     agents/
         __init__.py
@@ -92,8 +651,41 @@ Fresh_Workspace_BMAD/
       tech-stack.md
       workspace-standard.md
   frontend/
+    images/
+        [10 files: .jpegx8, .jpgx2 | e.g. 1.jpeg]
+    public/
+      images/
+          [15 files: .jpegx7, .pngx5, .jpgx3 | e.g. 2.jpeg]
+      videos/
+    src/
+      app/
+        api/
+          contact/
+              route.ts
+                  export async function POST
+          globals.css
+          layout.tsx
+              export const metadata
+          opengraph-image.tsx
+              export const alt
+              export const size
+              export const contentType
+          page.tsx
+      components/
+        motion/
+            MotionWrapper.tsx
+                export const heavyPhysics
+        sections/
+            BookingForm.tsx
+            FallingGallery.tsx
+            Hero.tsx
+            InstagramCTA.tsx
+      next-env.d.ts
       package-lock.json
       package.json
+      postcss.config.mjs
+      tailwind.config.ts
+      tsconfig.json
   scripts/
       autopilot-dev-story-opencode.ps1
       autopilot-dev-story.ps1
