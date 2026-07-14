@@ -1,3 +1,8 @@
+---
+name: 1_update_maps
+description: Update the Maps & INDEX.md files (any workspace)
+---
+
 # Workflow — Update the Maps & INDEX.md files (any workspace)
 
 > **Goal.** Bring every navigation artifact in a workspace back into agreement with what's *actually on
@@ -55,6 +60,20 @@ Daniel's `## Todo list` prose and every task file — stays **read-only** (you m
 ---
 
 ## Step 0 — Preflight + run the drift linter
+
+> **Step 0.0 — Read the commit-time journal FIRST (a pre-scoped worklist, not the source of truth).**
+> A `post-commit` recorder (`.githooks/post-commit` → `.agents/scripts/record_map_changes.py`) classifies
+> each commit's changes into this workflow's judgment categories and appends them to a machine-local,
+> gitignored journal (`docs/.maps-journal.jsonl`). Reading it tells you *what changed and what it needs*
+> before you lint, so you spend judgment (the slow layer) only where it's flagged:
+> ```bash
+> python .agents/scripts/record_map_changes.py --nag      # classified tail since the last reconcile (anchor)
+> ```
+> **It is a CACHE, never the truth.** The `--nag` output carries a freshness guard: if it prints
+> "*journal is behind HEAD … a commit bypassed the recorder*", the cache is incomplete — **ignore it and
+> rely entirely on the linter below** (whose `git diff <anchor>..HEAD` is ground truth). Even when fresh,
+> the linter still runs — the journal only *scopes* your attention; the linter *verifies* against disk.
+> No journal yet (fresh clone, recorder not enabled) → skip this and use the linter as before.
 
 1. **Work out where you are** (it decides the scope — see Step 0.5):
    - **Home base** = a `Projects/` dir exists beside `AGENTS.md` + `docs/repo-map.md`. This run **fans out**:
@@ -197,8 +216,9 @@ reconciliation:
    - **`.agents/{rules,workflows,skills,commands}/INDEX.md`** (MASTER here) — fix drift **directly** (e.g. a
      new command in `.agents/commands/` not yet in its INDEX), then note that `/sync-agents` must run to
      push the copies to `.claude/`/`.opencode/`. (In a project these are vendored/verify-only — not here.)
+   - **Missing level-2 `INDEX.md` files** — the linter flags these under `[level-2 INDEX presence]`. If a required folder is missing its `INDEX.md`, create it and list its top-level contents so future agents can read it instead of scanning the full folder.
 
----
+> **Fast-Path (`AGENTS.md` Updates Only)**: If the only recent change driving the update was an `AGENTS.md` file, you can fast-path the run by focusing purely on refreshing the `INDEX.md` files and the `repo-map` (if mode-preserving). `AGENTS.md` rule changes do not require a deep structural regeneration.
 
 ## Step 3.5 — Context hygiene (prune the continuity brief)
 
@@ -218,8 +238,8 @@ nags, propose a prune (it is an *edit*, so it goes through the Step 4 gate like 
      dir already uses).
    Leave §5 PICK UP / §6 HAND OFF (they describe only the latest state — not a growing stack). Never *summarise
    away* a block — archiving is a move, not a rewrite; the history stays readable, just out of the hot path.
-3. **INDEX.md** over ~25 rows → move the oldest rows into `INDEX-archive.md` (same folder), keeping the header
-   + newest ~25. The ledger stays scannable; old rows stay findable.
+3. **INDEX.md** over ~50 rows → move the oldest rows into `INDEX-archive.md` (same folder), keeping the header
+   + newest ~50. The ledger stays scannable; old rows stay findable.
 4. **Session folders** under `_artifacts/` are disk-only (never auto-loaded into context) → do **not** prune them
    here; archive them to `_artifacts/_archived/` on epic close, not on a size trigger.
 
@@ -310,7 +330,7 @@ each block:
 
 #### 🧹 Context hygiene (prune) — only if the linter nagged
 - active-context.md: 14 blocks → archive oldest 4 to <archive>, keep newest 10   [reason: over window]
-- INDEX.md: 38 rows → archive oldest 13 to INDEX-archive.md, keep newest 25       [reason: over cap]
+- INDEX.md: 65 rows → archive oldest 15 to INDEX-archive.md, keep newest 50       [reason: over cap]
 
 #### AUTO block
 - Regenerated (mode=content): <no change | N folders added/removed>
@@ -363,7 +383,10 @@ edits, say so and proceed (a regen that produces no diff needs no approval).
   ```bash
   python .agents/scripts/check_maps.py --set-anchor --all     # home base: lobby + each project
   ```
-  Do not anchor before committing — you'd baseline an un-committed state.
+  Do not anchor before committing — you'd baseline an un-committed state. **Re-anchoring also CONSUMES the
+  commit-time journal** (Step 0.0): it rolls every `docs/.maps-journal.jsonl` line up to the new anchor into
+  `docs/.maps-journal-archive.jsonl` (a MOVE, never a delete), so the live journal carries only *unreconciled*
+  drift for the next SessionStart nag. Nothing to do by hand — `--set-anchor` does it.
 - If you fixed any `.agents/*/INDEX.md`, remind him those need `/sync-agents` to reach `.claude`/`.opencode`.
 - **GitNexus re-index hand-off.** If check 9 hinted anywhere, hand Daniel the per-repo command **to run AFTER
   committing** (so the fresh index lands on the new HEAD, same reasoning as the anchor):

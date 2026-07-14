@@ -1,5 +1,6 @@
 ---
 description: Autopilot (headless) test-first Dev command — PLAN or IMPLEMENT a story test-first inside the shared autopilot run folder. Modeled off /sudo-dev-story-tests_AP but weaves the atdd (red) → implement (green) → automate (expand) flow from /sudo-dev-story-tests. NOT for interactive use; the autopilot orchestrator invokes it.
+platforms: [claude, opencode]
 ---
 
 # /sudo-dev-story-tests_AP — Autopilot Test-First Dev (Amelia)
@@ -22,6 +23,12 @@ CLAUDE.md session-start ritual and the code standards. This runs unattended, so:
 ---
 
 ## mode = `plan` (Stage 1)
+**BDD contract gate (HARD — check FIRST, before planning):** the story's frontmatter must carry either
+`bdd: locked` with every `bdd_contract:` path present on disk, or a recorded `bdd: waived — <rationale>`.
+Neither (including a `locked` flag whose contract file is missing) → this is a **human-only gap**: the
+Vision Lock is interactive with the human by design, and a headless lane must NEVER author the "lock"
+itself. End immediately with `PIPELINE_BLOCKER: BDD contract missing — run /sudo-bdd-tests for <story>`.
+
 Read the target story. Produce **only** `implementation_plan.md` in the shared folder:
 - Goal, an AC → implementation mapping, every file touched (with links), execution order, a verification
   plan, and any open questions — addressed to the QA teammate **Murat**, not to Daniel.
@@ -35,12 +42,19 @@ that is your direction. Apply **all** of the audit's proposed fixes first, then 
 
 1. **Red — author the failing acceptance tests first.** Before writing any production code, invoke the
    **`bmad-testarch-atdd`** skill to author failing acceptance tests for the story's ACs (one per AC). This
-   keeps dev test-first: the tests exist and FAIL before the implementation does.
+   keeps dev test-first: the tests exist and FAIL before the implementation does. The story's BDD
+   contract scenarios (`bdd_contract:` frontmatter — BDD-structured scenarios inside the story's ATDD red
+   test files by default, or opt-in `.feature` files + step defs) are part of this red set: extend those
+   same files rather than duplicating them as new tests, and drive them green with everything else.
+   (`bdd: waived` stories skip this clause, nothing else.)
 2. **Green — implement to drive them green.** Touch only the files the plan lists (the audit may amend that
    list). Leave parallel teammates' unrelated working-tree changes alone. Implement the code to drive the
    Step-1 red tests to green.
 3. **Expand — automate broader coverage.** Once green, invoke the **`bmad-testarch-automate`** skill to
    expand API / UI / contract coverage around what was built — closing gaps the ATDD pass did not reach.
+   **Leave evidence:** persist its summary as `_bmad-output/test-artifacts/automation-summary-<story>.md`;
+   if expansion is genuinely not applicable, record a `## Automate: skipped — <rationale>` section in
+   `walkthrough.md`. The QA gate checks for this evidence — a silent skip surfaces as CONCERNS.
 4. **Run the suite(s) until green and paste the *actual* output** into `walkthrough.md` (constitution rule:
    real output, never a paraphrase). Backend = `pytest backend/tests`; frontend = `npm test` from
    `frontend/`. If a test fails, find the **root cause** before fixing.

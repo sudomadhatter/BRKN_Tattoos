@@ -28,8 +28,8 @@ project under `Projects/`, never the lobby itself. Resolve the target now:
    project — cases 1–3 below are command-center-only (the lobby that hosts children under `Projects/`).
 1. **Inline override** — if `$ARGUMENTS` begins with a name matching a folder under `Projects/`, that is
    the target; consume that first token (the remainder is the real focus area). Write the name alone into
-   `_my_resources/active-project.txt` (overwrite) so later commands inherit it.
-2. **Active pointer** — else read `_my_resources/active-project.txt`; if it names a folder under
+   `.agents/active-project.txt` (overwrite) so later commands inherit it.
+2. **Active pointer** — else read `.agents/active-project.txt`; if it names a folder under
    `Projects/`, use it. (When `/sudo-dev-story-tests` auto-invokes this audit, the pointer is already set —
    it inherits the same target.)
 3. **Ask** — else STOP and ask Daniel *"Which project are we working in? (e.g. AGY_AVIATIONCHAT)"* —
@@ -102,12 +102,12 @@ grep -rn "symbolName" --include="*.ts" --include="*.tsx" --include="*.py"
 
 ---
 
-## Phase 2 — Over-Engineering Gate  *(STRICT — default NO-GO)*
+## Phase 2 — AI Drift & Over-Engineering Gate  *(STRICT — default NO-GO)*
 
 > The simplest implementation that satisfies the story's ACs **wins.** Complexity is guilty until
 > proven innocent: every abstraction, layer, option, or dependency must trace to a **current AC** —
-> never a hypothetical future. "might need," "for flexibility," "extensible," "future-proof," and
-> "reusable later" are **red flags, not justifications.** The burden of proof is on complexity.
+> never a hypothetical future. **AI Drift is the primary enemy here.** "might need," "for flexibility," "extensible," "future-proof," and
+> "reusable later" are **red flags, not justifications.** The burden of proof is on complexity. If the plan dictates building five layers of abstraction for a simple `if` statement, **hard-stop the dev flow.**
 
 **Tripwires — if any fires, the plan is `NEEDS-REVISION` until that step is justified against a
 current AC or cut:**
@@ -141,6 +141,7 @@ a one-line why:
 | Concurrent events (double-click, simultaneous SSE) | | |
 | Missing / invalid auth (expired token, unauthenticated route) | | |
 | Type-union / exhaustiveness edge (new value missing from a `Record`/switch → `undefined`/`KeyError`) | | |
+| AI Hallucinated Edge Case (Did the AI invent a requirement or state that cannot actually exist?) | | |
 
 Then name the failure modes that survived the walk: the forgotten edge case, the unintended
 consequence via a shared dependency, the silent killer (corrupts vs. throws), the concurrency trap.

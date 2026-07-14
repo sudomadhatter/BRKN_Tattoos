@@ -20,8 +20,8 @@ Run from the **command center** (the lobby), this command operates on exactly ON
    project — cases 1–3 below are command-center-only (the lobby that hosts children under `Projects/`).
 1. **Inline override** — if `$ARGUMENTS` begins with a name matching a folder under `Projects/`, that is
    the target; consume that first token (the remainder is the real argument — story id, focus, …). Write
-   the name alone into `_my_resources/active-project.txt` (overwrite) so later commands inherit it.
-2. **Active pointer** — else read `_my_resources/active-project.txt`; if it names a folder under
+   the name alone into `.agents/active-project.txt` (overwrite) so later commands inherit it.
+2. **Active pointer** — else read `.agents/active-project.txt`; if it names a folder under
    `Projects/`, use it.
 3. **Ask** — else STOP and ask Daniel *"Which project are we working in? (e.g. AGY_AVIATIONCHAT)"* —
    never guess, never operate on the lobby.
@@ -34,10 +34,8 @@ path (`_bmad-output/…`, `_bmad/…`, `_artifacts/…`, story files, test comma
 `PROJECT_ROOT`, run it against that directory, and read/write only there. If a needed path is missing under
 `PROJECT_ROOT`, STOP and say so — never fall back to the lobby.
 
-## Step 1 — Adversarial code review
-Invoke the **`bmad-code-review`** skill on the story's diff (its existing layers + the Test-Adequacy
-lens). Apply the actionable fixes yourself; if you change code, re-run the relevant suite(s) and paste
-actual output.
+## Step 1 — Clean-Room Adversarial Code Review
+Invoke the **`bmad-code-review`** skill on the story's diff. You MUST act as a **Clean-Room** agent: zero out any builder's bias. Your only job is to aggressively audit the final diff against the strict BDD contract. Hunt specifically for **AI Drift**, over-engineering, bloat, unnecessary abstractions, and logic flaws. Apply the actionable fixes yourself; if you change code, re-run the relevant suite(s) and paste actual output.
 
 ## Step 2 — Gate: opt-in check
 Read `_bmad-output/sudo-tests.yaml`.
@@ -46,10 +44,25 @@ Read `_bmad-output/sudo-tests.yaml`.
 
 ## Step 3 — Gate: run the checks (baseline-diff aware — fail only on NEW regressions)
 1. **Suite** — run the `/1_run-all-tests-back_front` command (pytest + vitest). Compare against the red
-   baseline; only failures NEW to this story count (legacy red is grandfathered).
+   baseline; only failures NEW to this story count (legacy red is grandfathered). **Two guards (per
+   `tests-must-gate-for-real`):** (a) confirm CI runs the *same real entrypoint* this gate runs — open the
+   pipeline YAML and check each test job invokes the project's actual harness command (e.g.
+   `npm run test:e2e`), not a divergent/partial config that silently skips the suite that matters; a green
+   CI check on a suite that never ran is a FAIL, not a pass. (b) Grandfathering is for *owned* legacy red
+   only (known-flaky / quarantined-with-ticket) — a red that asserts strings, selectors, or preconditions
+   absent from real source is **fiction, not legacy debt**; do not grandfather it, FAIL and fix/delete it.
 2. **`bmad-testarch-trace`** — requirements→tests traceability + coverage vs `l1_coverage_min`.
 3. **`bmad-testarch-nfr`** — perf / security / reliability (when `nfr: true` or `agent_bearing: true`).
-4. **`bmad-testarch-test-review`** — quality/flake of the tests themselves.
+4. **`bmad-testarch-test-review`** — quality/flake of the tests themselves. Also scan the CI pipeline for
+   *soft* test steps (`continue-on-error`, `|| true`, blanket `.skip`/`xfail`, "report-only"): each is a
+   hole that reads as green. Per `tests-must-gate-for-real`, a soft gate is legitimate only as a one-run
+   window carrying a named owner + a tracked expiry task — flag any that lacks both (CONCERNS floor) and
+   name it in the verdict.
+5. **Automate evidence** — feature stories only (numeric `E.S` ids; test-only MIN-FLOW stories like
+   `tea-*` are exempt): confirm ②'s expansion pass left evidence — `automation-summary-<story>.md` under
+   `_bmad-output/test-artifacts/`, or an explicit `## Automate: skipped — <rationale>` section in the
+   story walkthrough. Missing BOTH → cap the verdict at **CONCERNS** and name the gap in the verdict file
+   (never FAIL on this alone — stories gated before 2026-07-09 predate the check).
 
 ## Step 4 — Verdict
 Combine into **PASS / CONCERNS / FAIL / WAIVED** and write

@@ -107,6 +107,10 @@ Read, grep, run non-mutating commands. Understand the problem. Write to NO proje
   sort chronologically (e.g. `2026-06-25_artifacts-policy-finish`). Slug: lowercase, hyphen-separated, max 6
   words, from Daniel's first concrete request.
 
+**File names within a folder:** dated output → `YYYY-MM-DD_<slug>.md`; versioned drafts →
+`<slug>_draft.md` → `<slug>_v2.md` → `<slug>_final.md`. Memory / active-context sections are
+**numbered** (e.g. `5.2`) so agents skip-to-N instead of reading the whole file.
+
 Start the **TodoWrite task list** (this is the task tracker — no `task.md` file), then write
 `implementation_plan.md` (goal, every file touched with links, execution order, open questions,
 verification plan). Use the `Write` tool. Frontmatter on every artifact file:
@@ -173,6 +177,12 @@ captures: targets reviewed, audit level (Skip/Light/Full), the Phase 0–4 walk,
 This persists even though the audit writes no code — it audits a *plan*, and the plan's reviewer
 needs the audit on disk, not just in chat. Frontmatter `type: self_audit`.
 
+## MD Feedback / Review Protocol
+When Daniel says **"review"** (or asks to review a document/plan), EVERY agent must:
+1. Immediately return to the Markdown document you were just working on.
+2. Check the `md-feedback` MCP server (or read the file's `<!-- USER_MEMO -->` blocks) for Daniel's highlights, fixes, and questions.
+3. Address the fixes, answer the questions, and if applicable, use the MCP tools to resolve them. **NEVER manually edit the `<!-- USER_MEMO -->` HTML blocks with standard file write tools. You MUST use the MCP server tools (`apply_memo`, `batch_apply`, etc.) to update them, or you will corrupt the document's tracking hashes.**
+
 ## When to Skip
 - **Investigatory requests** ("explain how X works", "where is Y?") — no artifacts needed.
 - **Trivial one-liners** (typo, comment fix) — mention what you changed; skip the full cycle.
@@ -180,6 +190,7 @@ needs the audit on disk, not just in chat. Frontmatter `type: self_audit`.
 
 ## Hard Stops
 - NEVER modify any project file before `implementation_plan.md` is approved.
+- NEVER manually edit MD Feedback HTML blocks (`<!-- USER_MEMO -->`, `<!-- PLAN_CURSOR -->`, `<!-- CHECKPOINT -->`). You MUST use the `md-feedback` MCP tools to resolve feedback to avoid breaking document hashes.
 - NEVER skip the artifact folder for a "quick" change (outside the Skip cases above).
 - NEVER write/update an artifact — or name a file or path in chat — without posting a clickable Markdown
   link to it that same turn (see the "Link every artifact — and every file — in the chat" rule above).

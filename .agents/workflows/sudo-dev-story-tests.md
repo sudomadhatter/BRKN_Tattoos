@@ -1,5 +1,5 @@
 ---
-description: Develop a story test-first — plan, auto self-audit the plan, implement, then auto-expand coverage. Step ② of the sudo dev flow.
+description: Develop a story test-first — plan, then STOP at the self-audit gate (human picks: run it here on a chosen model, hand the plan to a fresh team, or continue), implement, then auto-expand coverage. Step ② of the sudo dev flow.
 platforms: [opencode, antigravity]
 ---
 
@@ -19,8 +19,8 @@ Run from the **command center** (the lobby), this command operates on exactly ON
    project — cases 1–3 below are command-center-only (the lobby that hosts children under `Projects/`).
 1. **Inline override** — if `$ARGUMENTS` begins with a name matching a folder under `Projects/`, that is
    the target; consume that first token (the remainder is the real argument — story id, focus, …). Write
-   the name alone into `_my_resources/active-project.txt` (overwrite) so later commands inherit it.
-2. **Active pointer** — else read `_my_resources/active-project.txt`; if it names a folder under
+   the name alone into `.agents/active-project.txt` (overwrite) so later commands inherit it.
+2. **Active pointer** — else read `.agents/active-project.txt`; if it names a folder under
    `Projects/`, use it.
 3. **Ask** — else STOP and ask Daniel *"Which project are we working in? (e.g. AGY_AVIATIONCHAT)"* —
    never guess, never operate on the lobby.
@@ -47,16 +47,51 @@ folder — set it **now** so `bmad-dev-story` and the audit don't drop files at 
 **Echo** `Artifacts: <ARTIFACT_DIR>` before Step 1. Every step below writes into `ARTIFACT_DIR`; pass it
 explicitly to each sub-skill and **never** let one mint its own root-level or date-stamped folder.
 
+## Step 0.7 — BDD contract gate (HARD — before any planning or code)
+The BDD Vision Lock is a standing, enterprise-level phase of this flow: **a story may not be planned or
+implemented without its locked behavior contract or a recorded waiver.** Check the story file's
+frontmatter, then verify on disk (trust nothing — a flag with no file behind it fails the gate):
+- **`bdd: locked`** AND every `bdd_contract:` path exists on disk (BDD-structured scenarios inside the
+  story's ATDD red test files — the default — or the opt-in `.feature` files) → proceed; those contracts
+  are part of the ① red set Step 3 must drive green. A `locked` record whose cited files are missing
+  (deleted, renamed, never written) **fails the gate** — fix the frontmatter or re-lock, never wave it
+  through (Epic 17.7 shipped a `locked` record backed by zero on-disk files).
+- **`bdd: waived — <rationale>`** (explicit, human-approved, recorded) → proceed; note the waiver in the plan.
+- **Neither** — including stories that predate this gate (no `bdd:` key at all) — → **STOP. Do not plan,
+  do not write code.** Run the **`/sudo-bdd-tests`** Vision Lock now (it is interactive — the human must
+  be in the loop) and only continue once the story carries a real contract or a recorded waiver. Never
+  grandfather a story past this gate silently, and never author the "lock" yourself without the session.
+
 ## Step 1 — Plan
 Invoke the **`bmad-dev-story`** skill in PLAN mode for the story in `$ARGUMENTS`. Produce its
 `implementation_plan.md` **into `ARTIFACT_DIR`** — not the BMAD stories dir, not the `_artifacts/` root.
 
-## Step 2 — Self-audit the plan (automatic, the moment the plan is written)
-Immediately invoke **`/sudo-self-audit`** against the just-written plan — the pre-dev adversarial
-stress-test (gaps, over-engineering, contract breaks) BEFORE any code. Fold its findings back into the
-plan. (Human-lane equivalent of autopilot Stage 2.) **Persist the audit as its own
-`self-audit-stress-test.md`** (`type: self_audit`) **in `ARTIFACT_DIR`** (Step 0.5) — inline findings, or
-findings folded only into the plan, do NOT satisfy the protocol (`artifacts-always-first` §7).
+## Step 2 — Self-audit STOP gate (MANDATORY — stop the moment the plan is written)
+The plan exists; **STOP before the audit and before any code.** This stop exists so the human can choose
+the audit *lane and model* — e.g. a lighter model for an easy story, or a fresh team with clean context.
+Post the clickable link to `implementation_plan.md` and ask ONE question:
+
+> "Plan ready → self-audit next. **(a)** run `/sudo-self-audit` here — name a model if you want a
+> different lane (e.g. 'use Fable' for an easy story); **(b)** you take `implementation_plan.md` to a
+> fresh team/session for the audit — I'll wait; or just say **continue**."
+
+Then **WAIT. Modify NO project file and write NO code until the human answers.**
+- **(a) Run here** — invoke **`/sudo-self-audit`** against the plan (the pre-dev adversarial stress-test:
+  gaps, over-engineering, contract breaks). If the human named a model, run the audit on it — spawn
+  `/sudo-self-audit` as a subagent with that model override where the surface supports it; otherwise the
+  human switches model and re-invokes. Fold findings back into the plan. (Human-lane equivalent of
+  autopilot Stage 2.) **Persist the audit as its own `self-audit-stress-test.md`** (`type: self_audit`)
+  **in `ARTIFACT_DIR`** (Step 0.5) — inline findings, or findings folded only into the plan, do NOT
+  satisfy the protocol (`artifacts-always-first` §7).
+- **(b) Fresh team** — do nothing and wait. When the human returns and says **continue**, read the
+  external audit (expect `self-audit-stress-test.md` in `ARTIFACT_DIR`; if it lives elsewhere, ask), fold
+  its findings into the plan, then proceed.
+- **"continue" with no audit run and none provided** — confirm once ("skipping the self-audit for this
+  story?"); on an explicit yes, write a stub `self-audit-stress-test.md` recording
+  `Skipped by human decision (<date>)` so the Step 5 checklist stays honest, and proceed.
+
+**"continue" always means: run the remainder of the flow (Step 2.5 → 3 → 4 → 5) without further stops** —
+subject only to Step 2.5's real-questions rule.
 
 ## Step 2.5 — Gate: ask first, but ONLY if you have questions
 A **conditional** gate — not a mandatory approval stop. After the plan + audit, decide honestly whether you
@@ -69,12 +104,21 @@ a plan concern the audit raised that you can't safely resolve yourself.
 
 ## Step 3 — Implement
 Invoke the **`bmad-dev-story`** skill in IMPLEMENT mode: apply the audit, write the code, and drive the
-① red tests to green. Run the relevant suite(s) and paste the **actual** output (constitution rule). If a
-test fails, find root cause before fixing.
+① red tests — **including the BDD contract scenarios from the Vision Lock (Step 0.7)** — to green. Run the
+relevant suite(s) and paste the **actual** output (constitution rule). If a test fails, find root cause
+before fixing.
+
+**Every ① red ends green or is quarantined — never shipped red (`tests-must-gate-for-real`).**
+A red that can't go green is the tell ① handed you **fiction** — it asserts what the design never had
+(copy absent from source, an auth-gated page assumed "public"). Fix it to the real contract or drop it
+with a one-line note; never delete-to-force-green.
 
 ## Step 4 — Automate (expand coverage)
 Invoke the **`bmad-testarch-automate`** skill to expand API / UI / contract coverage around what was
-built — closing gaps the ATDD pass did not reach.
+built — closing gaps the ATDD pass did not reach. **Leave evidence:** persist its summary as
+`_bmad-output/test-artifacts/automation-summary-<story>.md`; if expansion is genuinely not applicable to
+this story, write a `## Automate: skipped — <rationale>` section into the walkthrough instead. A silent
+skip is an unfinished Step 4 — the Step 5 checklist (and the ③ gate's automate-evidence check) verify this.
 
 ## Step 5 — Close-out artifacts (MANDATORY — never skip, even on "just do it")
 The Always-On **`artifacts-always-first`** rule governs this step; it is restated inline here so the
@@ -91,6 +135,11 @@ but no closing artifacts). Before reporting Done, `ARTIFACT_DIR` (the Step 0.5 f
       matrix, then a **`## Task Checklist`** section (final TodoWrite snapshot) and a **`## Your Actions`**
       section (the human's manual steps + the exact git commit command). **Required even when told to
       "skip the plan, just do it" — the walkthrough is never skippable.**
+- [ ] **Automate evidence (Step 4)** — `_bmad-output/test-artifacts/automation-summary-<story>.md` exists,
+      OR the walkthrough carries an explicit `## Automate: skipped — <rationale>` section. (Lives with the
+      TEA outputs, not in `ARTIFACT_DIR`.) A silent skip fails this checklist — the bug this item closes:
+      the 2026-07-09 testing audit found 13 of 14 Epic-8 ATDD stories finished green with no expansion
+      pass and nothing caught it.
 
 Post a clickable Markdown link to every artifact in the chat that same turn — never a bare path.
 
