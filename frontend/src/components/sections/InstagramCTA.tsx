@@ -86,17 +86,21 @@ export default function InstagramCTA() {
           
           <div className="relative group w-full h-[250px] bg-void border border-bone/10 flex items-center justify-center p-8 group overflow-hidden">
              {/* Magnetic Button */}
-             <motion.a 
-                href="https://instagram.com/brkntattoos"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="relative z-20 px-4 sm:px-8 py-6 border border-bone text-bone font-sans uppercase tracking-[0.2em] sm:tracking-[0.3em] text-sm sm:text-base text-center w-full bg-void-charcoal hover:bg-bone hover:text-void transition-colors duration-500"
+             <motion.div
+                className="relative z-20 w-full"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 transition={heavyPhysics}
-              >
-                Enter The Row
-              </motion.a>
+             >
+                <a 
+                  href="https://instagram.com/brkntattoos"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block px-4 sm:px-8 py-6 border border-bone text-bone font-sans uppercase tracking-[0.2em] sm:tracking-[0.3em] text-sm sm:text-base text-center w-full bg-void-charcoal hover:bg-bone hover:text-void transition-colors duration-500"
+                >
+                  Enter The Row
+                </a>
+             </motion.div>
           </div>
         </motion.div>
 
